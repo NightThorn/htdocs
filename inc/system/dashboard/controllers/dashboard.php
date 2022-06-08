@@ -100,7 +100,7 @@ class dashboard extends MY_Controller
 					$words = $this->tweet($value->full_text, $value->entities->urls[0]->expanded_url);
 					echo ('  <div class="preview-twitter preview-twitter-text item-post-type" style="max-width: 700px;
     padding: 10px 5px 10px;" data-type="text">
-                <div style="border: 1px solid #323a5f;" class="preview-content">
+                <div style="border: 1px solid #323a5f; border-radius: 10px;" class="preview-content">
                     <div class="user-info">
                         <img style="border-radius: 30px;" class="img-circle" src="' . $value->user->profile_image_url . '">
                         <div class="text">
@@ -111,19 +111,19 @@ class dashboard extends MY_Controller
                     <div style="padding: 10px;"> '. (($value->retweeted_status) ? '<i class="fas fa-retweet" style="color: grey;" aria-hidden="true"> '.$value->user->name.' retweeted</i>': $words) . '</div>
 					' .
 						(($value->extended_entities->media[0]->type) === "photo" && !$value->retweeted_status ?
-							'<img width="100%" src="' . $value->extended_entities->media[0]->media_url_https . '" />' : '')
+					'<img style="padding: 10px;" width="100%" src="' . $value->extended_entities->media[0]->media_url_https . '" />' : '')
 						. '
 							' .
 						(($value->extended_entities->media[0]->type) === "video"&& !$value->retweeted_status ?
-							'<video muted width="100%" src="' . $value->extended_entities->media[0]->url . '" />' : '')
+					'<video muted style="padding: 10px;" width="100%" src="' . $value->extended_entities->media[0]->url . '" />' : '')
 						.'
 						' .
 						(($value->extended_entities->media[0]->type) === "animated_gif"&& !$value->retweeted_status ?
-						'<video autoplay loop muted width="100%" src="' . $value->extended_entities->media[0]->video_info->variants[0]->url . '" />' : '')
+					'<video autoplay loop muted style="padding: 10px;" width="100%" src="' . $value->extended_entities->media[0]->video_info->variants[0]->url . '" />' : '')
 						. '
 
 						'. (($value->retweeted_status) ?
-					'<blockquote class="twitter-tweet"><p lang="en" dir="ltr"> '.$value->retweeted_status->full_text.'</p>&mdash; '.$value->retweeted_status->user->name.' (@'. $value->retweeted_status->user->screen_name.') <a href="https://twitter.com/'.$value->retweeted_status->user->screen_name.'/statuses/'.$value->retweeted_status->id.'"></a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>' : '').'
+					'<blockquote style="padding: 10px;" class="twitter-tweet"><p lang="en" dir="ltr"> '.$value->retweeted_status->full_text.'</p>&mdash; '.$value->retweeted_status->user->name.' (@'. $value->retweeted_status->user->screen_name.') <a href="https://twitter.com/'.$value->retweeted_status->user->screen_name.'/statuses/'.$value->retweeted_status->id.'"></a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>' : '').'
                     <div class="post-info">
                         <div class="clearfix"></div>
                     </div>
@@ -131,16 +131,16 @@ class dashboard extends MY_Controller
                     <div class="preview-comment">
                         <div class="row">
                             <div class="col-4">
-                                <i class="far fa-comment" id="comment_'.$value->id.'" aria-hidden="true">Comment </i>
+                                <i class="far fa-comment" id="comment_' . $value->id . '" aria-hidden="true"> </i><span>Comment</span>
                             </div>
                             <div class="col-4">
-                                <i class="fas fa-retweet"  style="' . (($value->retweeted ? 'color: green;' : '')) . '" id="retweet_' . $value->id .'"aria-hidden="true"> ' . (($value->retweeted ? 'Retweeted' : 'Retweet This')) . '</i>
+                                <i class="fas fa-retweet"  style="' . (($value->retweeted ? 'color: green;' : '')) . '" id="retweet_' . $value->id . '"aria-hidden="true"></i><span> ' . (($value->retweeted ? 'Retweeted' : 'Retweet This')) . '</span>
                             </div>
                             <div class="col-4">
-                                <i class="far fa-heart"  style="'.(($value->favorited ? 'color: red;' : '')).'" id="like_' . $value->id .'"aria-hidden="true"> ' . (($value->favorited ? 'Liked' : 'Like This')) . '</i>
+                                <i class="far fa-heart"  style="' . (($value->favorited ? 'color: red;' : '')) . '" id="like_' . $value->id . '"aria-hidden="true"></i> <span>' . (($value->favorited ? 'Liked' : 'Like This')) . '</span>
                             </div>
                             
-                        </div>  
+                        </div> 
                     </div>
                 </div>
             </div> ');
@@ -156,7 +156,7 @@ class dashboard extends MY_Controller
 					$words = $this->tweet($value->full_text, $value->entities->urls[0]->expanded_url);
 					echo ('  <div class="preview-twitter preview-twitter-text item-post-type" style="max-width: 700px;
     padding: 10px 5px 10px;" data-type="text">
-                <div style="border: 1px solid #323a5f;" class="preview-content">
+                <div style="border: 1px solid #323a5f; border-radius: 10px;" class="preview-content">
                     <div class="user-info">
                         <img style="border-radius: 30px;" class="img-circle" src="' . $value->user->profile_image_url . '">
                         <div class="text">
@@ -167,36 +167,36 @@ class dashboard extends MY_Controller
                     <div style="padding: 10px;"> ' . (($value->retweeted_status) ? '<i class="fas fa-retweet" style="color: grey;" aria-hidden="true"> ' . $value->user->name . ' retweeted</i>' : $words) . '</div>
 					' .
 						(($value->extended_entities->media[0]->type) === "photo" && !$value->retweeted_status ?
-							'<img width="100%" src="' . $value->extended_entities->media[0]->media_url_https . '" />' : '')
+					'<img width="100%" style="padding: 10px;" src="' . $value->extended_entities->media[0]->media_url_https . '" />' : '')
 						. '
 							' .
 						(($value->extended_entities->media[0]->type) === "video" && !$value->retweeted_status ?
-							'<video muted width="100%" src="' . $value->extended_entities->media[0]->url . '" />' : '')
+					'<video muted style="padding: 10px;" width="100%" src="' . $value->extended_entities->media[0]->url . '" />' : '')
 						. '
 						' .
 						(($value->extended_entities->media[0]->type) === "animated_gif" && !$value->retweeted_status ?
-							'<video autoplay loop muted width="100%" src="' . $value->extended_entities->media[0]->video_info->variants[0]->url . '" />' : '')
+					'<video autoplay style="padding: 10px;" loop muted width="100%" src="' . $value->extended_entities->media[0]->video_info->variants[0]->url . '" />' : '')
 						. '
 
 						' . (($value->retweeted_status) ?
-						'<blockquote class="twitter-tweet"><p lang="en" dir="ltr"> ' . $value->retweeted_status->full_text . '</p>&mdash; ' . $value->retweeted_status->user->name . ' (@' . $value->retweeted_status->user->screen_name . ') <a href="https://twitter.com/' . $value->retweeted_status->user->screen_name . '/statuses/' . $value->retweeted_status->id . '"></a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>' : '') . '
+						'<blockquote class="twitter-tweet"><p lang="en" dir="ltr"> ' . $value->retweeted_status->full_text . '</p>&mdash; ' . $value->retweeted_status->user->name . ' (@' . $value->retweeted_status->user->screen_name . ') <a href="https://twitter.com/' . $value->retweeted_status->user->screen_name . '/statuses/' . $value->retweeted_status->id . '"></a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>' : '') .'
                     <div class="post-info">
                         <div class="clearfix"></div>
                     </div>
                     
                     <div class="preview-comment">
-                        <div class="row">
+                         <div class="row">
                             <div class="col-4">
-                                <i class="far fa-comment" id="comment_' . $value->id . '" aria-hidden="true">Comment </i>
+                                <i class="far fa-comment" id="comment_' . $value->id . '" aria-hidden="true"> </i><span>Comment</span>
                             </div>
                             <div class="col-4">
-                                <i class="fas fa-retweet"  style="' . (($value->retweeted ? 'color: green;' : '')) . '" id="retweet_' . $value->id . '"aria-hidden="true"> ' . (($value->retweeted ? 'Retweeted' : 'Retweet This')) . '</i>
+                                <i class="fas fa-retweet"  style="' . (($value->retweeted ? 'color: green;' : '')) . '" id="retweet_' . $value->id . '"aria-hidden="true"></i><span> ' . (($value->retweeted ? 'Retweeted' : 'Retweet This')) . '</span>
                             </div>
                             <div class="col-4">
-                                <i class="far fa-heart"  style="' . (($value->favorited ? 'color: red;' : '')) . '" id="like_' . $value->id . '"aria-hidden="true"> ' . (($value->favorited ? 'Liked' : 'Like This')) . '</i>
+                                <i class="far fa-heart"  style="' . (($value->favorited ? 'color: red;' : '')) . '" id="like_' . $value->id . '"aria-hidden="true"></i> <span>' . (($value->favorited ? 'Liked' : 'Like This')) . '</span>
                             </div>
                             
-                        </div>  
+                        </div> 
                     </div>
                 </div>
             </div> ');
@@ -211,7 +211,7 @@ class dashboard extends MY_Controller
 					$words = $this->tweet($value->full_text, $value->entities->urls[0]->expanded_url);
 					echo ('  <div class="preview-twitter preview-twitter-text item-post-type" style="max-width: 700px;
     padding: 10px 5px 10px;" data-type="text">
-                <div style="border: 1px solid #323a5f;" class="preview-content">
+                <div style="border: 1px solid #323a5f; border-radius: 10px;" class="preview-content">
                     <div class="user-info">
                         <img style="border-radius: 30px;" class="img-circle" src="' . $value->user->profile_image_url . '">
                         <div class="text">
@@ -222,15 +222,15 @@ class dashboard extends MY_Controller
                     <div style="padding: 10px;"> ' . (($value->retweeted_status) ? '<i class="fas fa-retweet" style="color: grey;" aria-hidden="true"> ' . $value->user->name . ' retweeted</i>' : $words) . '</div>
 					' .
 					(($value->extended_entities->media[0]->type) === "photo" && !$value->retweeted_status ?
-						'<img width="100%" src="' . $value->extended_entities->media[0]->media_url_https . '" />' : '')
+					'<img width="100%"style="padding: 10px;"  src="' . $value->extended_entities->media[0]->media_url_https . '" />' : '')
 						. '
 							' .
 						(($value->extended_entities->media[0]->type) === "video" && !$value->retweeted_status ?
-							'<video muted width="100%" src="' . $value->extended_entities->media[0]->url . '" />' : '')
+					'<video muted style="padding: 10px;" width="100%" src="' . $value->extended_entities->media[0]->url . '" />' : '')
 						. '
 						' .
 						(($value->extended_entities->media[0]->type) === "animated_gif" && !$value->retweeted_status ?
-							'<video autoplay loop muted width="100%" src="' . $value->extended_entities->media[0]->video_info->variants[0]->url . '" />' : '')
+					'<video autoplay style="padding: 10px;" loop muted width="100%" src="' . $value->extended_entities->media[0]->video_info->variants[0]->url . '" />' : '')
 						. '
 
 						' . (($value->retweeted_status) ?
@@ -242,13 +242,13 @@ class dashboard extends MY_Controller
                     <div class="preview-comment">
                         <div class="row">
                             <div class="col-4">
-                                <i class="far fa-comment" id="comment_' . $value->id . '" aria-hidden="true">Comment </i>
+                                <i class="far fa-comment" id="comment_' . $value->id . '" aria-hidden="true"> </i><span>Comment</span>
                             </div>
                             <div class="col-4">
-                                <i class="fas fa-retweet"  style="' . (($value->retweeted ? 'color: green;' : '')) . '" id="retweet_' . $value->id . '"aria-hidden="true"> ' . (($value->retweeted ? 'Retweeted' : 'Retweet This')) . '</i>
+                                <i class="fas fa-retweet"  style="' . (($value->retweeted ? 'color: green;' : '')) . '" id="retweet_' . $value->id . '"aria-hidden="true"></i><span> ' . (($value->retweeted ? 'Retweeted' : 'Retweet This')) . '</span>
                             </div>
                             <div class="col-4">
-                                <i class="far fa-heart"  style="' . (($value->favorited ? 'color: red;' : '')) . '" id="like_' . $value->id . '"aria-hidden="true"> ' . (($value->favorited ? 'Liked' : 'Like This')) . '</i>
+                                <i class="far fa-heart"  style="' . (($value->favorited ? 'color: red;' : '')) . '" id="like_' . $value->id . '"aria-hidden="true"></i> <span>' . (($value->favorited ? 'Liked' : 'Like This')) . '</span>
                             </div>
                             
                         </div>  
