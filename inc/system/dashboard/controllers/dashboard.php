@@ -108,7 +108,7 @@ class dashboard extends MY_Controller
 							<span>'. $timePart .'</span>
                         </div>
                     </div>
-                    <div style="padding: 10px;"> '. (($value->retweeted_status) ? '<i class="fas fa-retweet" style="color: grey;" aria-hidden="true"> '.$value->user->name.' retweeted</i>': $words) . '</div>
+                    <div style="padding: 10px;"> '. (($value->retweeted_status) ? '<i class="fas fa-retweet" style="color: grey;" aria-hidden="true"> '.$value->user->name.' retweeted</i>': '<span style="font-size: large;">'.$words.'</span>') . '</div>
 					' .
 						(($value->extended_entities->media[0]->type) === "photo" && !$value->retweeted_status ?
 					'<img style="padding: 10px;" width="100%" src="' . $value->extended_entities->media[0]->media_url_https . '" />' : '')
@@ -164,7 +164,7 @@ class dashboard extends MY_Controller
 							<span>' . $timePart . '</span>
                         </div>
                     </div>
-                    <div style="padding: 10px;"> ' . (($value->retweeted_status) ? '<i class="fas fa-retweet" style="color: grey;" aria-hidden="true"> ' . $value->user->name . ' retweeted</i>' : $words) . '</div>
+                    <div style="padding: 10px;"> ' . (($value->retweeted_status) ? '<i class="fas fa-retweet" style="color: grey;" aria-hidden="true"> ' . $value->user->name . ' retweeted</i>' : '<span style="font-size: large;">' . $words . '</span>') . '</div>
 					' .
 						(($value->extended_entities->media[0]->type) === "photo" && !$value->retweeted_status ?
 					'<img width="100%" style="padding: 10px;" src="' . $value->extended_entities->media[0]->media_url_https . '" />' : '')
@@ -219,7 +219,7 @@ class dashboard extends MY_Controller
 							<span>' . $timePart . '</span>
                         </div>
                     </div>
-                    <div style="padding: 10px;"> ' . (($value->retweeted_status) ? '<i class="fas fa-retweet" style="color: grey;" aria-hidden="true"> ' . $value->user->name . ' retweeted</i>' : $words) . '</div>
+                    <div style="padding: 10px;"> ' . (($value->retweeted_status) ? '<i class="fas fa-retweet" style="color: grey;" aria-hidden="true"> ' . $value->user->name . ' retweeted</i>' : '<span style="font-size: large;">' . $words . '</span>') . '</div>
 					' .
 					(($value->extended_entities->media[0]->type) === "photo" && !$value->retweeted_status ?
 					'<img width="100%"style="padding: 10px;"  src="' . $value->extended_entities->media[0]->media_url_https . '" />' : '')
