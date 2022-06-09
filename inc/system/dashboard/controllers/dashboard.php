@@ -103,7 +103,7 @@ class dashboard extends MY_Controller
                     <div class="user-info">
                         <img style="border-radius: 30px;" class="img-circle" src="' . $value->user->profile_image_url . '">
                         <div class="text">
-                            <div class="name">' . $value->user->name . '<span> @' . $value->user->screen_name . '</span></div>
+                            <a target="_blank" href="https://twitter.com/' . $value->user->screen_name . '"><div class="name">' . $value->user->name . '<span> @' . $value->user->screen_name . '</span></div></a>
 							<span>' . $timePart . '</span>
                         </div>
                     </div>
@@ -162,7 +162,7 @@ class dashboard extends MY_Controller
                     <div class="user-info">
                         <img style="border-radius: 30px;" class="img-circle" src="' . $value->user->profile_image_url . '">
                         <div class="text">
-                            <div class="name">' . $value->user->name . '<span> @' . $value->user->screen_name . '</span></div>
+                            <a target="_blank" href="https://twitter.com/' . $value->user->screen_name . '"><div class="name">' . $value->user->name . '<span> @' . $value->user->screen_name . '</span></div></a>
 							<span>' . $timePart . '</span>
                         </div>
                     </div>
@@ -219,7 +219,7 @@ class dashboard extends MY_Controller
                     <div class="user-info">
                         <img style="border-radius: 30px;" class="img-circle" src="' . $value->user->profile_image_url . '">
                         <div class="text">
-                            <div class="name">' . $value->user->name . '<span> @' . $value->user->screen_name . '</span></div>
+                            <a target="_blank" href="https://twitter.com/' . $value->user->screen_name . '"><div class="name">' . $value->user->name . '<span> @' . $value->user->screen_name . '</span></div></a>
 							<span>' . $timePart . '</span>
                         </div>
                     </div>
@@ -240,7 +240,7 @@ class dashboard extends MY_Controller
 						' . (($value->retweeted_status) ?
 							'<blockquote style="padding: 10px;" class="twitter-tweet"><p lang="en" dir="ltr"> ' . $value->retweeted_status->full_text . '</p>&mdash; ' . $value->retweeted_status->user->name . ' (@' . $value->retweeted_status->user->screen_name . ') <a href="https://twitter.com/' . $value->retweeted_status->user->screen_name . '/statuses/' . $value->retweeted_status->id . '"></a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>' : '') . '
                     ' . (($value->quoted_status) ?
-							'<blockquote style="padding: 10px;" class="twitter-tweet"><p lang="en" dir="ltr"> ' . $value->quoted_status->full_text . '</p>&mdash; ' . $value->quoted_status->user->name . ' (@' . $value->quoted_status->user->screen_name . ') <a href="https://twitter.com/' . $value->quoted_status->user->screen_name . '/statuses/' . $value->quoted_status->id . '"></a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>' : '') . '
+							'<blockquote style="padding: 10px;" class="twitter-tweet"><p lang="en" dir="ltr"> ' . $value->quoted_status->full_text . '</p>&mdash; ' . $value->quoted_status->user->name . ' (@' . $value->quoted_status->user->screen_name . ') <a href="https://twitter.com/' . $value->quoted_status->user->screen_name . '/statuses/' . $value->quoted_status->id . '"></a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>' : '') .'
                      <div class="post-info">
                         <div class="clearfix"></div>
                     </div>
@@ -248,17 +248,20 @@ class dashboard extends MY_Controller
                     <div class="preview-comment">
                         <div class="row">
                             <div class="col-4">
-                                <i class="far fa-comment" id="comment_' . $value->id . '" aria-hidden="true"> </i><span>Comment</span>
+                                <i class="far fa-comment" onClick="commenttoggle(\'' . $value->id . '\');" id="twittercomment_' . $value->id .'" aria-hidden="true"> </i><span>Comment</span>
                             </div>
                             <div class="col-4">
-                                <i class="fas fa-retweet"  style="' . (($value->retweeted ? 'color: green;' : '')) . '" id="retweet_' . $value->id . '"aria-hidden="true"></i><span> ' . (($value->retweeted ? 'Retweeted' : 'Retweet This')) . '</span>
+                                <i class="fas fa-retweet"  onClick="twitter(\'' . $value->id . '\', \'retweet\');" style="' . (($value->retweeted ? 'color: green;' : '')) . '" id="twitterretweet_' . $value->id . '"aria-hidden="true"></i><span> ' . (($value->retweeted ? 'Retweeted' : 'Retweet This')) . '</span>
                             </div>
                             <div class="col-4">
-                                <i class="far fa-heart"  style="' . (($value->favorited ? 'color: red;' : '')) . '" id="like_' . $value->id . '"aria-hidden="true"></i> <span>' . (($value->favorited ? 'Liked' : 'Like This')) . '</span>
+                                <i class="far fa-heart"  onClick="twitter(\'' . $value->id . '\', \'like\');" style="' . (($value->favorited ? 'color: red;' : '')) . '" id="twitterlike_' . $value->id . '" aria-hidden="true"></i> <span>' . (($value->favorited ? 'Liked' : 'Like This')) . '</span>
                             </div>
                             
                         </div>  
                     </div>
+					<div style="display: none;" id="comment_'.$value->id.'" class="input-group">
+		  				<textarea type="text" placeholder="Comment..." class="form-control search-input" autocomplete="off" ></textarea>
+			  		</div>
                 </div>
             </div> ');
 				}
@@ -267,6 +270,8 @@ class dashboard extends MY_Controller
 
 
 				echo ('</div>');
+				
+				
 			} else {
 				$token = "yres";
 				echo $token;
@@ -283,16 +288,41 @@ class dashboard extends MY_Controller
 	{
 	}
 
-	public function retweet($id)
+
+	public function twitter()
 	{
+		$id = $this->input->post('id');
+		$act = $this->input->post('act');
+		$text = $this->input->post('text');
+
+		$this->consumer_key = get_option('twitter_consumer_key', '');
+		$this->consumer_secret = get_option('twitter_consumer_secret', '');
+
+		$account = $this->model->get("*", $this->tb_account_manager, "pid = '{$id}' AND social_network = 'twitter'");
+		$data = $account->token;
+		$json = json_decode($data, true);
+		$oauth_token = $json['oauth_token'];
+		$oauth_secret = $json['oauth_token_secret'];
+
+		$connection = new TwitterOAuth($this->consumer_key, $this->consumer_secret);
+		$connection->setOauthToken($oauth_token, $oauth_secret);
+		if ($act == "like") {
+			$connection->post("favorites/create", [
+				'id' => $id
+			], 'array');
+		} elseif ($act == "retweet") {
+			$connection->post("statuses/retweet/:id", [
+				'id' => $id
+			], 'array');
+		} else {
+			$connection->post("statuses/home_timeline", [
+				'status' => $text,
+				'in_reply_to_status_id' => $id,
+				'auto_populate_reply_metadata' => TRUE
+			], 'array');
+		}
 	}
 
-	public function twitterlike($id)
-	{
-	}
-	public function twittercomment($id)
-	{
-	}
 	public function settheme()
 	{
 		$id = (int) $this->input->post('theme');

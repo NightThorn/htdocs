@@ -51,11 +51,42 @@
 			success: function(data) {
 				console.log(data)
 				$(".column-two").empty().append(data);
-				
+
 			},
 			error: function() {
 				alert("Something went wrong. Please try again later.");
 			}
 		});
+	}
+
+	function twitter($id, $act, $text) {
+
+		$.ajax({
+			url: "<?php echo site_url('dashboard/twitter'); ?>",
+			method: "POST",
+			data: {
+				id: $id,
+				act: $act,
+				text: $text
+			},
+			success: function(data) {
+				console.log(data)
+
+			},
+			error: function() {
+				alert("Something went wrong. Please try again later.");
+			}
+		});
+	}
+
+	function commenttoggle($id) {
+
+		var x = document.getElementById("comment_" + $id);
+		if (x.style.display === "none") {
+			x.style.display = "flex";
+		} else {
+			x.style.display = "none";
+
+		}
 	}
 </script>
