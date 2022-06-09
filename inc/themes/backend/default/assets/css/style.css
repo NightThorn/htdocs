@@ -936,7 +936,6 @@ body#sidebar-dark .mCS-minimal.mCSB_scrollTools_vertical .mCSB_dragger {
 
 .widget-items .widget-item .widget-section {
     text-overflow: ellipsis;
-    white-space: nowrap;
     overflow: hidden;
     max-width: 180px;
 }

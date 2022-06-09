@@ -1,16 +1,7 @@
 <div class="input-group box-search-one">
-  	<input class="form-control search-input" type="text" autocomplete="off" placeholder="<?php _e('Search')?>">
-  	<span class="input-group-append">
-	    <button class="btn" type="button">
-	        <i class="fa fa-search"></i>
-	    </button>
+  	
 	    <?php _e( $block_group, false)?>
-	    <a class="btn btn-label-info">
-	    	<label class="i-checkbox i-checkbox--brand">
-				<input type="checkbox" name="id[]" class="check-all">
-				<span></span>
-			</label>
-	   	</a>
+	   
 	</span>
 </div>
 

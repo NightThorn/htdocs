@@ -98,7 +98,7 @@
              <span class="spinner"></span>
          </div>
      </div>
-     <div class="caption m-t-15">
+     <div id="captionidea" style="display: none;" class="caption m-t-15">
          <textarea id="ideagenerator" disabled="true" style="height: 400px; width: 100%;"></textarea>
          <div class="caption-toolbar">
              <div class="item">
@@ -126,6 +126,8 @@
                  $("#overlay").fadeOut(300);
 
                  $("#ideagenerator").val(data);
+                 $("#captionidea").css("display", "block");
+
                  $("#ideagenerator").css("display", "block");
 
 

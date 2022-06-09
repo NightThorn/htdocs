@@ -92,9 +92,8 @@ class dashboard extends MY_Controller
 				echo ('<div class="row">');
 
 				echo ('<div class="col-sm-4">');
-				echo ('<h2><span class="menu-icon"><img height="30" src="" class="mCS_img_loaded"><i class="fab fa-twitter" style="color: #00acee"></i></span> Newsfeed</h2>');
+				echo ('<h3><span class="menu-icon"><img height="30" src="" class="mCS_img_loaded"><i class="fab fa-twitter" style="color: #00acee"></i></span> Newsfeed</h3>');
 				foreach ($response as $value) {
-					
 					$returnedTimestamp = strtotime($value->created_at);
 					$timePart = date('h:i A', $returnedTimestamp);
 					$words = $this->tweet($value->full_text, $value->entities->urls[0]->expanded_url);
@@ -104,27 +103,30 @@ class dashboard extends MY_Controller
                     <div class="user-info">
                         <img style="border-radius: 30px;" class="img-circle" src="' . $value->user->profile_image_url . '">
                         <div class="text">
-                            <div class="name">' . $value->user->name .'<span> @' . $value->user->screen_name . '</span></div>
-							<span>'. $timePart .'</span>
+                            <div class="name">' . $value->user->name . '<span> @' . $value->user->screen_name . '</span></div>
+							<span>' . $timePart . '</span>
                         </div>
                     </div>
-                    <div style="padding: 10px;"> '. (($value->retweeted_status) ? '<i class="fas fa-retweet" style="color: grey;" aria-hidden="true"> '.$value->user->name.' retweeted</i>': '<span style="font-size: large;">'.$words.'</span>') . '</div>
+                    <div style="padding: 10px;"> ' . (($value->retweeted_status) ? '<i class="fas fa-retweet" style="color: grey;" aria-hidden="true"> ' . $value->user->name . ' retweeted</i>' : '<span style="font-size: medium;">' . $words . '</span>') . '</div>
 					' .
 						(($value->extended_entities->media[0]->type) === "photo" && !$value->retweeted_status ?
-					'<img style="padding: 10px;" width="100%" src="' . $value->extended_entities->media[0]->media_url_https . '" />' : '')
+							'<img style="padding: 10px;" width="100%" src="' . $value->extended_entities->media[0]->media_url_https . '" />' : '')
 						. '
 							' .
-						(($value->extended_entities->media[0]->type) === "video"&& !$value->retweeted_status ?
-					'<video muted style="padding: 10px;" width="100%" src="' . $value->extended_entities->media[0]->url . '" />' : '')
-						.'
+						(($value->extended_entities->media[0]->type) === "video" && !$value->retweeted_status ?
+							'<video controls muted style="padding: 10px;" width="100%"> <source src="' . $value->extended_entities->media[0]->video_info->variants[0]->url . '" type="video/mp4"></video>' : '')
+						. '
 						' .
-						(($value->extended_entities->media[0]->type) === "animated_gif"&& !$value->retweeted_status ?
-					'<video autoplay loop muted style="padding: 10px;" width="100%" src="' . $value->extended_entities->media[0]->video_info->variants[0]->url . '" />' : '')
+						(($value->extended_entities->media[0]->type) === "animated_gif" && !$value->retweeted_status ?
+							'<video autoplay loop muted style="padding: 10px;" width="100%" src="' . $value->extended_entities->media[0]->video_info->variants[0]->url . '" />' : '')
 						. '
 
-						'. (($value->retweeted_status) ?
-					'<blockquote style="padding: 10px;" class="twitter-tweet"><p lang="en" dir="ltr"> '.$value->retweeted_status->full_text.'</p>&mdash; '.$value->retweeted_status->user->name.' (@'. $value->retweeted_status->user->screen_name.') <a href="https://twitter.com/'.$value->retweeted_status->user->screen_name.'/statuses/'.$value->retweeted_status->id.'"></a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>' : '').'
-                    <div class="post-info">
+						' . (($value->retweeted_status) ?
+							'<blockquote style="padding: 10px;" class="twitter-tweet"><p lang="en" dir="ltr"> ' . $value->retweeted_status->full_text . '</p>&mdash; ' . $value->retweeted_status->user->name . ' (@' . $value->retweeted_status->user->screen_name . ') <a href="https://twitter.com/' . $value->retweeted_status->user->screen_name . '/statuses/' . $value->retweeted_status->id . '"></a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>' : '') . '
+                    ' . (($value->quoted_status) ?
+							'<blockquote style="padding: 10px;" class="twitter-tweet"><p lang="en" dir="ltr"> ' . $value->quoted_status->full_text . '</p>&mdash; ' . $value->quoted_status->user->name . ' (@' . $value->quoted_status->user->screen_name . ') <a href="https://twitter.com/' . $value->quoted_status->user->screen_name . '/statuses/' . $value->quoted_status->id . '"></a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>' : '') . '
+                    
+					<div class="post-info">
                         <div class="clearfix"></div>
                     </div>
                     
@@ -147,8 +149,8 @@ class dashboard extends MY_Controller
 				}
 				echo ('</div>');
 
-					echo ('<div class="col-sm-4">');
-					echo ('<h2><span class="menu-icon"><img height="30" src="" class="mCS_img_loaded"><i class="fab fa-twitter" style="color: #00acee"></i></span> My Timeline</h2>');
+				echo ('<div class="col-sm-4">');
+				echo ('<h3><span class="menu-icon"><img height="30" src="" class="mCS_img_loaded"><i class="fab fa-twitter" style="color: #00acee"></i></span> My Timeline</h3>');
 				foreach ($mytimeline as $value) {
 
 					$returnedTimestamp = strtotime($value->created_at);
@@ -164,23 +166,25 @@ class dashboard extends MY_Controller
 							<span>' . $timePart . '</span>
                         </div>
                     </div>
-                    <div style="padding: 10px;"> ' . (($value->retweeted_status) ? '<i class="fas fa-retweet" style="color: grey;" aria-hidden="true"> ' . $value->user->name . ' retweeted</i>' : '<span style="font-size: large;">' . $words . '</span>') . '</div>
+                    <div style="padding: 10px;"> ' . (($value->retweeted_status) ? '<i class="fas fa-retweet" style="color: grey;" aria-hidden="true"> ' . $value->user->name . ' retweeted</i>' : '<span style="font-size: medium;">' . $words . '</span>') . '</div>
 					' .
 						(($value->extended_entities->media[0]->type) === "photo" && !$value->retweeted_status ?
-					'<img width="100%" style="padding: 10px;" src="' . $value->extended_entities->media[0]->media_url_https . '" />' : '')
+							'<img width="100%" style="padding: 10px;" src="' . $value->extended_entities->media[0]->media_url_https . '" />' : '')
 						. '
 							' .
 						(($value->extended_entities->media[0]->type) === "video" && !$value->retweeted_status ?
-					'<video muted style="padding: 10px;" width="100%" src="' . $value->extended_entities->media[0]->url . '" />' : '')
+							'<video controls muted style="padding: 10px;" width="100%"> <source src="' . $value->extended_entities->media[0]->video_info->variants[0]->url . '" type="video/mp4"></video>' : '')
 						. '
 						' .
 						(($value->extended_entities->media[0]->type) === "animated_gif" && !$value->retweeted_status ?
-					'<video autoplay style="padding: 10px;" loop muted width="100%" src="' . $value->extended_entities->media[0]->video_info->variants[0]->url . '" />' : '')
+							'<video autoplay style="padding: 10px;" loop muted width="100%" src="' . $value->extended_entities->media[0]->video_info->variants[0]->url . '" />' : '')
 						. '
 
 						' . (($value->retweeted_status) ?
-						'<blockquote class="twitter-tweet"><p lang="en" dir="ltr"> ' . $value->retweeted_status->full_text . '</p>&mdash; ' . $value->retweeted_status->user->name . ' (@' . $value->retweeted_status->user->screen_name . ') <a href="https://twitter.com/' . $value->retweeted_status->user->screen_name . '/statuses/' . $value->retweeted_status->id . '"></a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>' : '') .'
-                    <div class="post-info">
+							'<blockquote style="padding: 10px;" class="twitter-tweet"><p lang="en" dir="ltr"> ' . $value->retweeted_status->full_text . '</p>&mdash; ' . $value->retweeted_status->user->name . ' (@' . $value->retweeted_status->user->screen_name . ') <a href="https://twitter.com/' . $value->retweeted_status->user->screen_name . '/statuses/' . $value->retweeted_status->id . '"></a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>' : '') . '
+                    ' . (($value->quoted_status) ?
+							'<blockquote style="padding: 10px;" class="twitter-tweet"><p lang="en" dir="ltr"> ' . $value->quoted_status->full_text . '</p>&mdash; ' . $value->quoted_status->user->name . ' (@' . $value->quoted_status->user->screen_name . ') <a href="https://twitter.com/' . $value->quoted_status->user->screen_name . '/statuses/' . $value->quoted_status->id . '"></a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>' : '') . '
+                     <div class="post-info">
                         <div class="clearfix"></div>
                     </div>
                     
@@ -201,9 +205,9 @@ class dashboard extends MY_Controller
                 </div>
             </div> ');
 				}
-					echo ('</div>');
+				echo ('</div>');
 				echo ('<div class="col-sm-4">');
-				echo ('<h2><span class="menu-icon"><img height="30" src="" class="mCS_img_loaded"><i class="fab fa-twitter" style="color: #00acee"></i></span> Mentions</h2>');
+				echo ('<h3><span class="menu-icon"><img height="30" src="" class="mCS_img_loaded"><i class="fab fa-twitter" style="color: #00acee"></i></span> Mentions</h3>');
 				foreach ($mentions as $value) {
 
 					$returnedTimestamp = strtotime($value->created_at);
@@ -219,23 +223,25 @@ class dashboard extends MY_Controller
 							<span>' . $timePart . '</span>
                         </div>
                     </div>
-                    <div style="padding: 10px;"> ' . (($value->retweeted_status) ? '<i class="fas fa-retweet" style="color: grey;" aria-hidden="true"> ' . $value->user->name . ' retweeted</i>' : '<span style="font-size: large;">' . $words . '</span>') . '</div>
+                    <div style="padding: 10px;"> ' . (($value->retweeted_status) ? '<i class="fas fa-retweet" style="color: grey;" aria-hidden="true"> ' . $value->user->name . ' retweeted</i>' : '<span style="font-size: medium;">' . $words . '</span>') . '</div>
 					' .
-					(($value->extended_entities->media[0]->type) === "photo" && !$value->retweeted_status ?
-					'<img width="100%"style="padding: 10px;"  src="' . $value->extended_entities->media[0]->media_url_https . '" />' : '')
+						(($value->extended_entities->media[0]->type) === "photo" && !$value->retweeted_status ?
+							'<img width="100%"style="padding: 10px;"  src="' . $value->extended_entities->media[0]->media_url_https . '" />' : '')
 						. '
 							' .
 						(($value->extended_entities->media[0]->type) === "video" && !$value->retweeted_status ?
-					'<video muted style="padding: 10px;" width="100%" src="' . $value->extended_entities->media[0]->url . '" />' : '')
+							'<video controls muted style="padding: 10px;" width="100%"> <source src="' . $value->extended_entities->media[0]->video_info->variants[0]->url . '" type="video/mp4"></video>' : '')
 						. '
 						' .
 						(($value->extended_entities->media[0]->type) === "animated_gif" && !$value->retweeted_status ?
-					'<video autoplay style="padding: 10px;" loop muted width="100%" src="' . $value->extended_entities->media[0]->video_info->variants[0]->url . '" />' : '')
+							'<video autoplay style="padding: 10px;" loop muted width="100%" src="' . $value->extended_entities->media[0]->video_info->variants[0]->url . '" />' : '')
 						. '
 
 						' . (($value->retweeted_status) ?
-							'<blockquote class="twitter-tweet"><p lang="en" dir="ltr"> ' . $value->retweeted_status->full_text . '</p>&mdash; ' . $value->retweeted_status->user->name . ' (@' . $value->retweeted_status->user->screen_name . ') <a href="https://twitter.com/' . $value->retweeted_status->user->screen_name . '/statuses/' . $value->retweeted_status->id . '"></a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>' : '') . '
-                    <div class="post-info">
+							'<blockquote style="padding: 10px;" class="twitter-tweet"><p lang="en" dir="ltr"> ' . $value->retweeted_status->full_text . '</p>&mdash; ' . $value->retweeted_status->user->name . ' (@' . $value->retweeted_status->user->screen_name . ') <a href="https://twitter.com/' . $value->retweeted_status->user->screen_name . '/statuses/' . $value->retweeted_status->id . '"></a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>' : '') . '
+                    ' . (($value->quoted_status) ?
+							'<blockquote style="padding: 10px;" class="twitter-tweet"><p lang="en" dir="ltr"> ' . $value->quoted_status->full_text . '</p>&mdash; ' . $value->quoted_status->user->name . ' (@' . $value->quoted_status->user->screen_name . ') <a href="https://twitter.com/' . $value->quoted_status->user->screen_name . '/statuses/' . $value->quoted_status->id . '"></a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>' : '') . '
+                     <div class="post-info">
                         <div class="clearfix"></div>
                     </div>
                     
@@ -260,8 +266,7 @@ class dashboard extends MY_Controller
 
 
 
-			echo ('</div>');
-
+				echo ('</div>');
 			} else {
 				$token = "yres";
 				echo $token;
@@ -278,9 +283,16 @@ class dashboard extends MY_Controller
 	{
 	}
 
+	public function retweet($id)
+	{
+	}
 
-
-
+	public function twitterlike($id)
+	{
+	}
+	public function twittercomment($id)
+	{
+	}
 	public function settheme()
 	{
 		$id = (int) $this->input->post('theme');
@@ -305,7 +317,7 @@ class dashboard extends MY_Controller
 	{
 
 		//Convert urls to <a> links
-		$tweeter = preg_replace('|([\w\d]*)\s?(https?://([\d\w\.-]+\.[\w\.]{2,6})[^\s\]\[\<\>]*/?)|i', '$1 <a href="$2">'.$url.'</a>', $tweet);
+		$tweeter = preg_replace('|([\w\d]*)\s?(https?://([\d\w\.-]+\.[\w\.]{2,6})[^\s\]\[\<\>]*/?)|i', '$1 <a href="$2">' . $url . '</a>', $tweet);
 
 		//Convert hashtags to twitter searches in <a> links
 		$tweets = preg_replace("/#([A-Za-z0-9\/\.]*)/", "<a target=\"_new\" href=\"http://twitter.com/search?q=$1\">#$1</a>", $tweeter);
@@ -316,4 +328,3 @@ class dashboard extends MY_Controller
 		return $tweetss;
 	}
 }
-
