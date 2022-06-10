@@ -94,6 +94,7 @@ class dashboard extends MY_Controller
 				echo ('<div class="col-sm-4">');
 				echo ('<h3><span class="menu-icon"><img height="30" src="" class="mCS_img_loaded"><i class="fab fa-twitter" style="color: #00acee"></i></span> Newsfeed</h3>');
 				foreach ($response as $value) {
+					//var_dump($value);
 					$returnedTimestamp = strtotime($value->created_at);
 					$timePart = date('h:i A', $returnedTimestamp);
 					$words = $this->tweet($value->full_text, $value->entities->urls[0]->expanded_url);
@@ -114,7 +115,7 @@ class dashboard extends MY_Controller
 						. '
 							' .
 						(($value->extended_entities->media[0]->type) === "video" && !$value->retweeted_status ?
-							'<video controls muted style="padding: 10px;" width="100%"> <source src="' . $value->extended_entities->media[0]->video_info->variants[0]->url . '" type="video/mp4"></video>' : '')
+							'<video controls muted style="padding: 10px;" width="100%"> <source src="' . $value->extended_entities->media[0]->video_info->variants[1]->url . '" type="video/mp4"></video>' : '')
 						. '
 						' .
 						(($value->extended_entities->media[0]->type) === "animated_gif" && !$value->retweeted_status ?
@@ -130,20 +131,24 @@ class dashboard extends MY_Controller
                         <div class="clearfix"></div>
                     </div>
                     
-                    <div class="preview-comment">
+                         <div class="preview-comment">
                         <div class="row">
                             <div class="col-4">
-                                <i class="far fa-comment" id="comment_' . $value->id . '" aria-hidden="true"> </i><span>Comment</span>
+                                <i class="far fa-comment" onClick="commenttoggle(\'' . $value->id_str . '\');" id="twittercommenticon_' . $value->id . '" aria-hidden="true"> </i><span id="commented_' . $value->id . '">Comment</span>
                             </div>
                             <div class="col-4">
-                                <i class="fas fa-retweet"  style="' . (($value->retweeted ? 'color: green;' : '')) . '" id="retweet_' . $value->id . '"aria-hidden="true"></i><span> ' . (($value->retweeted ? 'Retweeted' : 'Retweet This')) . '</span>
+                                <i class="fas fa-retweet"  onClick="twitter(\'' . $value->id_str . '\', \'retweet\', \'\', \'' . $id . '\');" style="' . (($value->retweeted ? 'color: green;' : '')) . '" id="twitterretweet_' . $value->id . '"aria-hidden="true"></i><span id="retweeted_' . $value->id . '"> ' . (($value->retweeted ? 'Retweeted' : 'Retweet This')) . '</span>
                             </div>
                             <div class="col-4">
-                                <i class="far fa-heart"  style="' . (($value->favorited ? 'color: red;' : '')) . '" id="like_' . $value->id . '"aria-hidden="true"></i> <span>' . (($value->favorited ? 'Liked' : 'Like This')) . '</span>
+                                <i class="far fa-heart"  onClick="twitter(\'' . $value->id_str . '\', \'like\', \'\', \'' . $id . '\');" style="' . (($value->favorited ? 'color: red;' : '')) . '" id="twitterlike_' . $value->id . '" aria-hidden="true"></i> <span id="favorited_' . $value->id . '">' . (($value->favorited ? 'Liked' : 'Like This')) . '</span>
                             </div>
                             
-                        </div> 
+                        </div>  
                     </div>
+					<div style="display: none;" id="comment_' . $value->id_str . '" class="input-group">
+					<textarea type="text" placeholder="Comment..." id="commentinput_' . $value->id . '" class="form-control" autocomplete="off" ></textarea>
+					<button onClick="twittercomment(\'' . $value->id_str . '\', \'comment\', \'' . $id . '\');">Post</button>
+					</div>
                 </div>
             </div> ');
 				}
@@ -173,7 +178,7 @@ class dashboard extends MY_Controller
 						. '
 							' .
 						(($value->extended_entities->media[0]->type) === "video" && !$value->retweeted_status ?
-							'<video controls muted style="padding: 10px;" width="100%"> <source src="' . $value->extended_entities->media[0]->video_info->variants[0]->url . '" type="video/mp4"></video>' : '')
+							'<video controls muted style="padding: 10px;" width="100%"> <source src="' . $value->extended_entities->media[0]->video_info->variants[1]->url . '" type="video/mp4"></video>' : '')
 						. '
 						' .
 						(($value->extended_entities->media[0]->type) === "animated_gif" && !$value->retweeted_status ?
@@ -188,20 +193,24 @@ class dashboard extends MY_Controller
                         <div class="clearfix"></div>
                     </div>
                     
-                    <div class="preview-comment">
-                         <div class="row">
+                         <div class="preview-comment">
+                        <div class="row">
                             <div class="col-4">
-                                <i class="far fa-comment" id="comment_' . $value->id . '" aria-hidden="true"> </i><span>Comment</span>
+                                <i class="far fa-comment" onClick="commenttoggle(\'' . $value->id_str . '\');" id="twittercommenticon_' . $value->id . '" aria-hidden="true"> </i><span id="commented_' . $value->id . '">Comment</span>
                             </div>
                             <div class="col-4">
-                                <i class="fas fa-retweet"  style="' . (($value->retweeted ? 'color: green;' : '')) . '" id="retweet_' . $value->id . '"aria-hidden="true"></i><span> ' . (($value->retweeted ? 'Retweeted' : 'Retweet This')) . '</span>
+                                <i class="fas fa-retweet"  onClick="twitter(\'' . $value->id_str . '\', \'retweet\', \'\', \'' . $id . '\');" style="' . (($value->retweeted ? 'color: green;' : '')) . '" id="twitterretweet_' . $value->id . '"aria-hidden="true"></i><span id="retweeted_' . $value->id . '"> ' . (($value->retweeted ? 'Retweeted' : 'Retweet This')) . '</span>
                             </div>
                             <div class="col-4">
-                                <i class="far fa-heart"  style="' . (($value->favorited ? 'color: red;' : '')) . '" id="like_' . $value->id . '"aria-hidden="true"></i> <span>' . (($value->favorited ? 'Liked' : 'Like This')) . '</span>
+                                <i class="far fa-heart"  onClick="twitter(\'' . $value->id_str . '\', \'like\', \'\', \'' . $id . '\');" style="' . (($value->favorited ? 'color: red;' : '')) . '" id="twitterlike_' . $value->id . '" aria-hidden="true"></i> <span id="favorited_' . $value->id . '">' . (($value->favorited ? 'Liked' : 'Like This')) . '</span>
                             </div>
                             
-                        </div> 
+                        </div>  
                     </div>
+					<div style="display: none;" id="comment_' . $value->id_str . '" class="input-group">
+					<textarea type="text" placeholder="Comment..." id="commentinput_' . $value->id . '" class="form-control" autocomplete="off" ></textarea>
+					<button onClick="twittercomment(\'' . $value->id_str . '\', \'comment\', \'' . $id . '\');">Post</button>
+					</div>
                 </div>
             </div> ');
 				}
@@ -230,7 +239,7 @@ class dashboard extends MY_Controller
 						. '
 							' .
 						(($value->extended_entities->media[0]->type) === "video" && !$value->retweeted_status ?
-							'<video controls muted style="padding: 10px;" width="100%"> <source src="' . $value->extended_entities->media[0]->video_info->variants[0]->url . '" type="video/mp4"></video>' : '')
+							'<video controls muted style="padding: 10px;" width="100%"> <source src="' . $value->extended_entities->media[0]->video_info->variants[1]->url . '" type="video/mp4"></video>' : '')
 						. '
 						' .
 						(($value->extended_entities->media[0]->type) === "animated_gif" && !$value->retweeted_status ?
@@ -240,7 +249,7 @@ class dashboard extends MY_Controller
 						' . (($value->retweeted_status) ?
 							'<blockquote style="padding: 10px;" class="twitter-tweet"><p lang="en" dir="ltr"> ' . $value->retweeted_status->full_text . '</p>&mdash; ' . $value->retweeted_status->user->name . ' (@' . $value->retweeted_status->user->screen_name . ') <a href="https://twitter.com/' . $value->retweeted_status->user->screen_name . '/statuses/' . $value->retweeted_status->id . '"></a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>' : '') . '
                     ' . (($value->quoted_status) ?
-							'<blockquote style="padding: 10px;" class="twitter-tweet"><p lang="en" dir="ltr"> ' . $value->quoted_status->full_text . '</p>&mdash; ' . $value->quoted_status->user->name . ' (@' . $value->quoted_status->user->screen_name . ') <a href="https://twitter.com/' . $value->quoted_status->user->screen_name . '/statuses/' . $value->quoted_status->id . '"></a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>' : '') .'
+							'<blockquote style="padding: 10px;" class="twitter-tweet"><p lang="en" dir="ltr"> ' . $value->quoted_status->full_text . '</p>&mdash; ' . $value->quoted_status->user->name . ' (@' . $value->quoted_status->user->screen_name . ') <a href="https://twitter.com/' . $value->quoted_status->user->screen_name . '/statuses/' . $value->quoted_status->id . '"></a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>' : '') . '
                      <div class="post-info">
                         <div class="clearfix"></div>
                     </div>
@@ -248,20 +257,21 @@ class dashboard extends MY_Controller
                     <div class="preview-comment">
                         <div class="row">
                             <div class="col-4">
-                                <i class="far fa-comment" onClick="commenttoggle(\'' . $value->id . '\');" id="twittercomment_' . $value->id .'" aria-hidden="true"> </i><span>Comment</span>
+                                <i class="far fa-comment" onClick="commenttoggle(\'' . $value->id_str . '\');" id="twittercommenticon_' . $value->id . '" aria-hidden="true"> </i><span id="commented_' . $value->id . '">Comment</span>
                             </div>
                             <div class="col-4">
-                                <i class="fas fa-retweet"  onClick="twitter(\'' . $value->id . '\', \'retweet\');" style="' . (($value->retweeted ? 'color: green;' : '')) . '" id="twitterretweet_' . $value->id . '"aria-hidden="true"></i><span> ' . (($value->retweeted ? 'Retweeted' : 'Retweet This')) . '</span>
+                                <i class="fas fa-retweet"  onClick="twitter(\'' . $value->id_str . '\', \'retweet\', \'\', \'' . $id . '\');" style="' . (($value->retweeted ? 'color: green;' : '')) . '" id="twitterretweet_' . $value->id . '"aria-hidden="true"></i><span id="retweeted_' . $value->id . '"> ' . (($value->retweeted ? 'Retweeted' : 'Retweet This')) . '</span>
                             </div>
                             <div class="col-4">
-                                <i class="far fa-heart"  onClick="twitter(\'' . $value->id . '\', \'like\');" style="' . (($value->favorited ? 'color: red;' : '')) . '" id="twitterlike_' . $value->id . '" aria-hidden="true"></i> <span>' . (($value->favorited ? 'Liked' : 'Like This')) . '</span>
+                                <i class="far fa-heart"  onClick="twitter(\'' . $value->id_str . '\', \'like\', \'\', \'' . $id . '\');" style="' . (($value->favorited ? 'color: red;' : '')) . '" id="twitterlike_' . $value->id . '" aria-hidden="true"></i> <span id="favorited_' . $value->id . '">' . (($value->favorited ? 'Liked' : 'Like This')) . '</span>
                             </div>
                             
                         </div>  
                     </div>
-					<div style="display: none;" id="comment_'.$value->id.'" class="input-group">
-		  				<textarea type="text" placeholder="Comment..." class="form-control search-input" autocomplete="off" ></textarea>
-			  		</div>
+					<div style="display: none;" id="comment_' . $value->id_str . '" class="input-group">
+					<textarea type="text" placeholder="Comment..." id="commentinput_' . $value->id . '" class="form-control" autocomplete="off" ></textarea>
+					<button onClick="twittercomment(\'' . $value->id_str . '\', \'comment\', \'' . $id . '\');">Post</button>
+					</div>
                 </div>
             </div> ');
 				}
@@ -270,8 +280,6 @@ class dashboard extends MY_Controller
 
 
 				echo ('</div>');
-				
-				
 			} else {
 				$token = "yres";
 				echo $token;
@@ -291,35 +299,37 @@ class dashboard extends MY_Controller
 
 	public function twitter()
 	{
-		$id = $this->input->post('id');
+		$account = $this->input->post('account');
+		$idstr = $this->input->post('id');
+		$id = intval($idstr);
 		$act = $this->input->post('act');
 		$text = $this->input->post('text');
 
 		$this->consumer_key = get_option('twitter_consumer_key', '');
 		$this->consumer_secret = get_option('twitter_consumer_secret', '');
 
-		$account = $this->model->get("*", $this->tb_account_manager, "pid = '{$id}' AND social_network = 'twitter'");
+		$account = $this->model->get("*", $this->tb_account_manager, "pid = '{$account}' AND social_network = 'twitter'");
 		$data = $account->token;
 		$json = json_decode($data, true);
 		$oauth_token = $json['oauth_token'];
 		$oauth_secret = $json['oauth_token_secret'];
-
 		$connection = new TwitterOAuth($this->consumer_key, $this->consumer_secret);
 		$connection->setOauthToken($oauth_token, $oauth_secret);
 		if ($act == "like") {
-			$connection->post("favorites/create", [
-				'id' => $id
-			], 'array');
+			$parameters = array('id' => $id);
+			$response = $connection->post('favorites/create', $parameters);
 		} elseif ($act == "retweet") {
-			$connection->post("statuses/retweet/:id", [
-				'id' => $id
-			], 'array');
+			$response = $connection->post('statuses/retweet/' . $id);
 		} else {
-			$connection->post("statuses/home_timeline", [
-				'status' => $text,
-				'in_reply_to_status_id' => $id,
+			$parameters = array(
+				'status' => $text, 'in_reply_to_status_id' => $id,
 				'auto_populate_reply_metadata' => TRUE
-			], 'array');
+			);
+			$response = $connection->post("statuses/update", $parameters);
+		}
+		foreach ($response as $yes) {
+			$dd = json_encode($yes);
+			echo ('<div class="row"> ' . $dd . '</div>');
 		}
 	}
 

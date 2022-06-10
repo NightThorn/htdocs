@@ -59,7 +59,7 @@
 		});
 	}
 
-	function twitter($id, $act, $text) {
+	function twitter($id, $act, $text, $account) {
 
 		$.ajax({
 			url: "<?php echo site_url('dashboard/twitter'); ?>",
@@ -67,11 +67,19 @@
 			data: {
 				id: $id,
 				act: $act,
-				text: $text
+				text: $text,
+				account: $account
+
 			},
 			success: function(data) {
-				console.log(data)
+				if ($act == "like") {
+					$("#twitterlike_" + $id).css("color", "red");
+					$("#favorited_" + $id).text("Liked");
 
+				} else if ($act == "retweet") {
+					$("#twitterretweet_" + $id).css("color", "green");
+					$("#retweeted_" + $id).text("Retweeted");
+				}
 			},
 			error: function() {
 				alert("Something went wrong. Please try again later.");
@@ -89,4 +97,31 @@
 
 		}
 	}
+
+	function twittercomment($id, $act, $account) {
+		event.preventDefault();
+		$text = $("#commentinput_" + $id).val();
+		$.ajax({
+			url: "<?php echo site_url('dashboard/twitter'); ?>",
+			method: "POST",
+			data: {
+				id: $id,
+				act: $act,
+				text: $text,
+				account: $account
+
+			},
+			success: function(data) {
+
+				$("#twittercommenticon_" + $id).css("color", "#00fbcd");
+				$("#commented_" + $id).text("Commented");
+				$("#comment_" + $id).css("display", "none");
+
+
+			},
+			error: function() {
+				alert("Something went wrong. Please try again later.");
+			}
+		});
+	};
 </script>
