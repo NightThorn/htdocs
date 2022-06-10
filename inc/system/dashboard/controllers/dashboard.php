@@ -94,7 +94,7 @@ class dashboard extends MY_Controller
 				echo ('<div class="col-sm-4">');
 				echo ('<h3><span class="menu-icon"><img height="30" src="" class="mCS_img_loaded"><i class="fab fa-twitter" style="color: #00acee"></i></span> Newsfeed</h3>');
 				foreach ($response as $value) {
-					//var_dump($value);
+
 					$returnedTimestamp = strtotime($value->created_at);
 					$timePart = date('h:i A', $returnedTimestamp);
 					$words = $this->tweet($value->full_text, $value->entities->urls[0]->expanded_url);
@@ -108,14 +108,14 @@ class dashboard extends MY_Controller
 							<span>' . $timePart . '</span>
                         </div>
                     </div>
-                    <div style="padding: 10px;"> ' . (($value->retweeted_status) ? '<i class="fas fa-retweet" style="color: grey;" aria-hidden="true"> ' . $value->user->name . ' retweeted</i>' : '<span style="font-size: medium;">' . $words . '</span>') . '</div>
+                    <div style="padding: 10px;"> ' . (($value->retweeted_status) ? '<i class="fas fa-retweet" style="color: grey;" aria-hidden="true"> ' . $value->user->name . ' retweeted</i>' : '<span style="font-size: medium; word-break: break-word;">' . $words . '</span>') . '</div>
 					' .
 						(($value->extended_entities->media[0]->type) === "photo" && !$value->retweeted_status ?
 							'<img style="padding: 10px;" width="100%" src="' . $value->extended_entities->media[0]->media_url_https . '" />' : '')
 						. '
 							' .
 						(($value->extended_entities->media[0]->type) === "video" && !$value->retweeted_status ?
-							'<video controls muted style="padding: 10px;" width="100%"> <source src="' . $value->extended_entities->media[0]->video_info->variants[1]->url . '" type="video/mp4"></video>' : '')
+							'<video controls muted style="padding: 10px;" width="100%"> <source src="' . $value->extended_entities->media[0]->video_info->variants[0]->url . '" type="video/mp4"></video>' : '')
 						. '
 						' .
 						(($value->extended_entities->media[0]->type) === "animated_gif" && !$value->retweeted_status ?
@@ -171,14 +171,14 @@ class dashboard extends MY_Controller
 							<span>' . $timePart . '</span>
                         </div>
                     </div>
-                    <div style="padding: 10px;"> ' . (($value->retweeted_status) ? '<i class="fas fa-retweet" style="color: grey;" aria-hidden="true"> ' . $value->user->name . ' retweeted</i>' : '<span style="font-size: medium;">' . $words . '</span>') . '</div>
+                    <div style="padding: 10px;"> ' . (($value->retweeted_status) ? '<i class="fas fa-retweet" style="color: grey;" aria-hidden="true"> ' . $value->user->name . ' retweeted</i>' : '<span style="font-size: medium; word-break: break-word;">' . $words . '</span>') . '</div>
 					' .
 						(($value->extended_entities->media[0]->type) === "photo" && !$value->retweeted_status ?
 							'<img width="100%" style="padding: 10px;" src="' . $value->extended_entities->media[0]->media_url_https . '" />' : '')
 						. '
 							' .
 						(($value->extended_entities->media[0]->type) === "video" && !$value->retweeted_status ?
-							'<video controls muted style="padding: 10px;" width="100%"> <source src="' . $value->extended_entities->media[0]->video_info->variants[1]->url . '" type="video/mp4"></video>' : '')
+							'<video controls muted style="padding: 10px;" width="100%"> <source src="' . $value->extended_entities->media[0]->video_info->variants[0]->url . '" type="video/mp4"></video>' : '')
 						. '
 						' .
 						(($value->extended_entities->media[0]->type) === "animated_gif" && !$value->retweeted_status ?
@@ -218,6 +218,7 @@ class dashboard extends MY_Controller
 				echo ('<div class="col-sm-4">');
 				echo ('<h3><span class="menu-icon"><img height="30" src="" class="mCS_img_loaded"><i class="fab fa-twitter" style="color: #00acee"></i></span> Mentions</h3>');
 				foreach ($mentions as $value) {
+					var_dump($value->extended_entities->media[0]->video_info);
 
 					$returnedTimestamp = strtotime($value->created_at);
 					$timePart = date('h:i A', $returnedTimestamp);
@@ -232,14 +233,14 @@ class dashboard extends MY_Controller
 							<span>' . $timePart . '</span>
                         </div>
                     </div>
-                    <div style="padding: 10px;"> ' . (($value->retweeted_status) ? '<i class="fas fa-retweet" style="color: grey;" aria-hidden="true"> ' . $value->user->name . ' retweeted</i>' : '<span style="font-size: medium;">' . $words . '</span>') . '</div>
+                    <div style="padding: 10px;"> ' . (($value->retweeted_status) ? '<i class="fas fa-retweet" style="color: grey;" aria-hidden="true"> ' . $value->user->name . ' retweeted</i>' : '<span style="font-size: medium; word-break: break-word;">' . $words . '</span>') . '</div>
 					' .
 						(($value->extended_entities->media[0]->type) === "photo" && !$value->retweeted_status ?
 							'<img width="100%"style="padding: 10px;"  src="' . $value->extended_entities->media[0]->media_url_https . '" />' : '')
 						. '
 							' .
 						(($value->extended_entities->media[0]->type) === "video" && !$value->retweeted_status ?
-							'<video controls muted style="padding: 10px;" width="100%"> <source src="' . $value->extended_entities->media[0]->video_info->variants[1]->url . '" type="video/mp4"></video>' : '')
+							'<video controls muted style="padding: 10px;" width="100%"> <source src="' . $value->extended_entities->media[0]->video_info->variants[0]->url . '" type="video/mp4"></video>' : '')
 						. '
 						' .
 						(($value->extended_entities->media[0]->type) === "animated_gif" && !$value->retweeted_status ?
