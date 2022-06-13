@@ -95,7 +95,7 @@
 		</div>
 	</div>
 
-	<div style="box-shadow: rgb(0 0 0 / 9%) 0px 1px 3px, rgb(245 245 245) 0px -1px 0px inset;" class="header">
+	<div  class="header">
 		<?php _e(isset($CI->topbar) ? $CI->topbar : "", false) ?>
 	</div>
 

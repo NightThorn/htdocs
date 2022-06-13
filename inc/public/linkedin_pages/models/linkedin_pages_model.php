@@ -28,7 +28,7 @@ class linkedin_pages_model extends MY_Model {
 					"module_icon" => $this->module_icon,
 					"module_color" => $this->module_color,
 					"module_id" => $this->module_id,
-					"text" => __("Add Linkedin page"),
+					"text" => __("Linkedin page"),
 					"url" => get_url($this->module_id."/oauth")
 				]),
 				'accounts' => Modules::run("account_manager/block_accounts", [

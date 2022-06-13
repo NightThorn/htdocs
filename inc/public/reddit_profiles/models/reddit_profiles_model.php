@@ -27,7 +27,7 @@ class reddit_profiles_model extends MY_Model {
 				"module_icon" => $this->module_icon,
 				"module_color" => $this->module_color,
 				"module_id" => $this->module_id,
-				"text" => __("Add Reddit profile"),
+				"text" => __("Reddit profile"),
 				"url" => get_url($this->module_id."/oauth")
 			]),
 			'accounts' => Modules::run("account_manager/block_accounts", [

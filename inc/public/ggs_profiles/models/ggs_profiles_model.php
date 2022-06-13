@@ -30,7 +30,7 @@ class ggs_profiles_model extends MY_Model {
 				"module_color" => $this->module_color,
 				"module_img" => $this->module_img,
 				"module_id" => $this->module_id,
-				"text" => __("Add GGs profile"),
+				"text" => __("GGs profile"),
 				"url" => get_url($this->module_id."/oauth")
 			]),
 			'accounts' => Modules::run("account_manager/block_accounts", [

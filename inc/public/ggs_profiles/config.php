@@ -8,5 +8,5 @@ return [
     'desc' => '',
     'icon' => '',
     'img' => 'https://ggspace.nyc3.cdn.digitaloceanspaces.com/uploads/photos/2022/04/gg_a542a716a5e431dbeee72402d1fcdb0b.png',
-    'color' => '#00FF00'
+    'color' => '#0cb70c'
 ];

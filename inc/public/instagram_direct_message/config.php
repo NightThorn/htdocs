@@ -13,14 +13,14 @@ return [
         'position' => 980,
         'name' => 'Instagram',
         'sub_menu' => [
-        	'position' => 3000,
+            'position' => 3000,
             'id' => 'instagram_direct_message',
             'name' => 'Direct Message'
         ]
     ],
     'css' => [
-		'assets/css/instagram_direct_message.css'
-	],
+        'assets/css/instagram_direct_message.css'
+    ],
     'js' => [
         'assets/js/instagram_direct_message.js'
     ]
