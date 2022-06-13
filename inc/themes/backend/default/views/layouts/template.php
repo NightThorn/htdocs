@@ -9,7 +9,7 @@
 	<meta name="description" content="<?php _e(get_option('website_desc', '#1 Marketing Platform for Social Network')) ?>">
 	<meta name="keywords" content="<?php _e(get_option('website_keywords', 'social network, marketing, brands, businesses, agencies, individuals')) ?>">
 	<link rel="icon" type="image/png" href="<?php _e(get_option('website_favicon', get_url("inc/themes/backend/default/assets/img/favicon.png"))) ?>" />
-	
+
 	<!--Css-->
 	<link rel="stylesheet" type="text/css" href="<?php _e(get_theme_backend_url('assets/fonts/line/line-awesome.min.css')) ?>">
 	<link rel="stylesheet" type="text/css" href="<?php _e(get_theme_backend_url('assets/fonts/feather/feather.css')) ?>">
@@ -95,7 +95,7 @@
 		</div>
 	</div>
 
-	<div class="header">
+	<div style="box-shadow: rgb(0 0 0 / 9%) 0px 1px 3px, rgb(245 245 245) 0px -1px 0px inset;" class="header">
 		<?php _e(isset($CI->topbar) ? $CI->topbar : "", false) ?>
 	</div>
 

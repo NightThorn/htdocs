@@ -1,6 +1,6 @@
 <div class="post-overplay"><div class='loader loader1'><div><div><div><div></div></div></div></div></div></div>
 <div class="headline m-b-25">
-	<div class="title fs-16 text-info"><i class="far fa-edit"></i> <?php _e('New post')?></div>
+	<div class="title fs-16"><i class="far fa-edit"></i> <?php _e('New post')?></div>
 </div>
 <div class="row lg post-type m-b-15">
 	<?php if( !empty( $post_types ) ){?>

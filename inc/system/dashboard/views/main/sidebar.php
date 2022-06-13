@@ -36,6 +36,24 @@
 	</div>
 
 </div>
+<style>
+	#hoverretweet:hover {
+		background-color: rgb(27 35 67);
+		color: white;
+
+	}
+
+	#hoverlike:hover {
+		background-color: rgb(27 35 67);
+		color: white;
+	}
+
+	#hovercomment:hover {
+		background-color: rgb(27 35 67);
+		color: white;
+
+	}
+</style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 <script>

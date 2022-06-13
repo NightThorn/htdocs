@@ -12,7 +12,7 @@
 		<div class="row">
 			<div class="col-6">
 				<div class="form-group">
-					<label><?php _e('Time post')?></label>
+					<label><?php _e('Post Time')?></label>
 					<input type="text" class="form-control datetime" autocomplete="off" name="time_post" value="">
 				</div>
 			</div>

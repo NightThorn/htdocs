@@ -2,7 +2,7 @@
 	
 	<div class="fm-wiget">
 		<div class="fm-progress-bar"></div>
-		<div class="fm-files sortable">
+		<div style="display: none;" class="fm-files sortable">
 
 		</div>
 

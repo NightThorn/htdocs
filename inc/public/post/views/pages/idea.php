@@ -79,11 +79,10 @@
  <div class="ai">
      <div class="fm-action text-center">
 
-         OR
      </div>
      <div style="padding-bottom: 20px;"></div>
      <div></div>
-     <div style="padding: 10px;" class="title fs-16 text-info"><i class="far fa-hand-spock"></i> Let Our A.I. Get You Some Post Ideas</div>
+     <div style="padding: 10px;" class="title fs-16"><i class="far fa-hand-spock"></i> Let Our A.I. Get You Some Post Ideas</div>
      <h3></h3>
      <form id="ideaform" method="post">
          <div class="input-group">
@@ -99,7 +98,7 @@
          </div>
      </div>
      <div id="captionidea" style="display: none;" class="caption m-t-15">
-         <textarea id="ideagenerator" disabled="true" style="height: 400px; width: 100%;"></textarea>
+         <textarea id="ideagenerator" disabled="true" style="height: 400px; padding: 10px; width: 100%;"></textarea>
          <div class="caption-toolbar">
              <div class="item">
                  <div class="count-word"><i class="fas fa-text-width"></i> <span>0</span></div>

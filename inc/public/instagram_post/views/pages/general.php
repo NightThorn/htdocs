@@ -34,23 +34,13 @@
 			  	</li>
 			</ul>
 			<div class="advance-content">
-				<div class="alert alert-solid-brand" role="alert">
+				<div style="display: none;" class="alert alert-solid-brand" role="alert">
 					<?php _e("Advance options just support for Instagram accounts login by medthod: Username and Password")?>
 				</div>
-				<div class="form-group widget-location">
-					<div class="input-group">
-					  	<span class="input-group-prepend">
-					  		<span class="input-group-text"><i class="fas fa-map-marked-alt"></i></span>
-						</span>
-					  	<input class="form-control search-location" data-action="<?php _e( get_module_url('location') )?>" data-hide-overplay="false" data-result="html" data-content="load-location" type="text" autocomplete="off" placeholder="<?php _e("Enter location")?>">
-					</div>
-				  	<div class="small loading"><?php _e('Searching...')?></div>
-
-					<div class="load-location"></div>
-				</div>
+				
 
 				<div class="caption m-t-15 m-b-15">
-					<textarea name="advance[comment]" class="form-control post-comment" placeholder="<?php _e('Add a first comment on your post')?>"></textarea>
+					<textarea name="advance[comment]" class="form-control post-comment" placeholder="<?php _e('Add a first comment to your post')?>"></textarea>
 					<div class="caption-toolbar">
 						<div class="item">
 							<div class="count-word"><i class="fas fa-text-width"></i> <span>0</span></div>			
