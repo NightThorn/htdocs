@@ -51,7 +51,7 @@ function Caption() {
 
             $.post(PATH + "caption/hashtags", { caption: caption }, function (result) {
 
-                $('.post-create').addClass("overflow-hidden h-100").append(result.text);
+                $('.post-create .caption .emojionearea-editor').append(result.text);
 
 
             }, 'json');

@@ -66,7 +66,9 @@ class caption extends MY_Controller
 	public function hashtags()
 	{
 
-		$caption = post('caption');
+		$message = post('caption');
+		$caption = preg_replace("/[\n\r]/", "", $message);
+
 		$url = "https://api.openai.com/v1/engines/text-davinci-002/completions";
 		$apikey = $this
 			->db
@@ -77,7 +79,7 @@ class caption extends MY_Controller
 			->row()
 			->apikey;
 		$data = '{
-	"prompt": "Best hashtags for a post: ' . $caption . ' \\n",
+	"prompt": "Get the best hashtags for this post = ' . $caption . ' ",
 	"temperature": 0.83,
 	"max_tokens": 483,
 	"top_p": 1,
@@ -96,12 +98,10 @@ class caption extends MY_Controller
 		curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
 		$json_response = curl_exec($curl);
 		curl_close($curl);
-
 		$response = json_decode($json_response, true);
 		ms([
 			"status" => "success",
 			"text" => $response['choices'][0]['text']
-
 		]);
 	}
 	public function save($ids = "")
