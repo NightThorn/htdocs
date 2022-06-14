@@ -395,7 +395,17 @@ body#sidebar-dark .sidebar {
     border-right: 1px solid #1e1e2d;
 }
 
+.button {
 
+    -webkit-box-shadow: 5px 5px 15px 5px rgba(0, 0, 0, 0.19);
+    box-shadow: 5px 5px 15px 5px rgba(0, 0, 0, 0.19);
+}
+
+.card {
+    border-radius: 20px;
+    -webkit-box-shadow: 5px 5px 15px 5px rgba(0, 0, 0, 0.19);
+    box-shadow: 5px 5px 15px 5px rgba(0, 0, 0, 0.19);
+}
 
 body#sidebar-dark .sidebar .menu .menu-item a {
     color: #9899ac;

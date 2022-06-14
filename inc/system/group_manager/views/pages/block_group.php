@@ -1,5 +1,6 @@
 <?php if (!empty($groups)) { ?>
-	<button style="width: 100%;" type="button" class="btn dropdown-toggle btn-label-info" data-toggle="dropdown"><i class="fas fa-users"></i> Social Groups</button>
+	<button style="width: 100%; -webkit-box-shadow: 5px 5px 15px 5px rgba(0,0,0,0.19); 
+box-shadow: 5px 5px 15px 5px rgba(0,0,0,0.19);" type="button" class="btn dropdown-toggle btn-label-info" data-toggle="dropdown"><i class="fas fa-users"></i> Social Groups</button>
 	<div class="dropdown-menu dropdown-menu-right dropdown-menu-fit dropdown-menu-anim dropdown-menu-top-unround">
 		<?php foreach ($groups as $key => $row) : ?>
 			<a href="javascript:void(0);" class="dropdown-item action-groups" data-item='<?php _e(get_data($row, "data")) ?>'><i class="fas fa-caret-right"></i> <?php _e(get_data($row, "name")) ?></a>

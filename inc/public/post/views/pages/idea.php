@@ -84,10 +84,11 @@
      <div></div>
      <div style="padding: 10px;" class="title fs-16"><i class="far fa-hand-spock"></i> Let Our A.I. Get You Some Post Ideas</div>
      <h3></h3>
-     <form id="ideaform" method="post">
+     <form id="ideaform" method="post" style="-webkit-box-shadow: 5px 5px 15px 5px rgba(0,0,0,0.19); 
+box-shadow: 5px 5px 15px 5px rgba(0,0,0,0.19);">
          <div class="input-group">
              <input class="form-control" type="text" id="topic" name="topic" placeholder="<?php _e("Enter a topic") ?>">
-             <button class="btn btn-secondary" id="generate" style="border-radius: 20px; border-top-left-radius: 0; border-bottom-left-radius: 0;" type="submit"><i class="fas fa-search"></i></button>
+             <button class="btn " id="generate" style="color: #113098 " type="submit"><i class="fas fa-search"></i></button>
          </div>
          <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>">
 
