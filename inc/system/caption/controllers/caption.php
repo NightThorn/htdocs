@@ -1,17 +1,19 @@
 <?php
-class caption extends MY_Controller {
-	
+class caption extends MY_Controller
+{
+
 	public $tb_caption = "sp_caption";
 	public $module_name;
 
-	public function __construct(){
+	public function __construct()
+	{
 		parent::__construct();
-		_permission(get_class($this)."_enable");
-		$this->load->model(get_class($this).'_model', 'model');
+		_permission(get_class($this) . "_enable");
+		$this->load->model(get_class($this) . '_model', 'model');
 
 		//
-		$this->module_name = get_module_config( $this, 'name' );
-		$this->module_icon = get_module_config( $this, 'icon' );
+		$this->module_name = get_module_config($this, 'name');
+		$this->module_icon = get_module_config($this, 'icon');
 		//
 	}
 
@@ -19,7 +21,7 @@ class caption extends MY_Controller {
 	{
 		$team_id = _t('id');
 		$result = $this->model->fetch("*", $this->tb_caption);
-		$page_type = is_ajax()?false:true;
+		$page_type = is_ajax() ? false : true;
 
 		//
 		$data = [];
@@ -38,55 +40,94 @@ class caption extends MY_Controller {
 		$page = page($this, "pages", "general", $page, $data, $page_type);
 		//
 
-		if( !is_ajax() ){
+		if (!is_ajax()) {
 
 			$views = [
-				"subheader" => view( 'main/subheader', [ 'module_name' => $this->module_name, 'module_icon' => $this->module_icon ], true ),
-				"column_one" => view("main/content", [ 'view' => $page ] ,true), 
+				"subheader" => view('main/subheader', ['module_name' => $this->module_name, 'module_icon' => $this->module_icon], true),
+				"column_one" => view("main/content", ['view' => $page], true),
 			];
-			
-			views( [
+
+			views([
 				"title" => $this->module_name,
 				"fragment" => "fragment_one",
 				"views" => $views
-			] );
-
-		}else{
-			_e( $page, false );
+			]);
+		} else {
+			_e($page, false);
 		}
-
 	}
 
-	public function get(){
+	public function get()
+	{
 		$team_id = _t('id');
 		$result = $this->model->fetch("*", $this->tb_caption, "team_id = '{$team_id}'");
-		view("pages/popup", [ 'result' => $result ], false);
+		view("pages/popup", ['result' => $result], false);
 	}
+	public function hashtags()
+	{
 
+		$caption = post('caption');
+		$url = "https://api.openai.com/v1/engines/text-davinci-002/completions";
+		$apikey = $this
+			->db
+			->select('apikey')
+			->where('id', 1)
+			->limit(1)
+			->get('apikeys')
+			->row()
+			->apikey;
+		$data = '{
+	"prompt": "Best hashtags for a post: ' . $caption . ' \\n",
+	"temperature": 0.83,
+	"max_tokens": 483,
+	"top_p": 1,
+	"frequency_penalty": 0,
+	"presence_penalty": 2
+}';
+		$curl = curl_init($url);
+		curl_setopt($curl, CURLOPT_HEADER, false);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt(
+			$curl,
+			CURLOPT_HTTPHEADER,
+			array("Content-type: application/json", "Authorization: Bearer " . $apikey)
+		);
+		curl_setopt($curl, CURLOPT_POST, true);
+		curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+		$json_response = curl_exec($curl);
+		curl_close($curl);
+
+		$response = json_decode($json_response, true);
+		ms([
+			"status" => "success",
+			"text" => $response['choices'][0]['text']
+
+		]);
+	}
 	public function save($ids = "")
 	{
 		$caption = post('caption');
 		$team_id = _t('id');
 
 		$item = $this->model->get("*", $this->tb_caption, "ids = '{$ids}'");
-		if(!$item){
+		if (!$item) {
 			validate('null', __('Caption'), $caption);
 
-			$this->model->insert($this->tb_caption , [
+			$this->model->insert($this->tb_caption, [
 				"ids" => ids(),
 				"team_id" => $team_id,
 				"content" => $caption,
 				"created" => now()
 			]);
-		}else{
+		} else {
 			validate('null', __('Caption'), $caption);
 
 			$this->model->update(
-				$this->tb_caption, 
+				$this->tb_caption,
 				[
 					"content" => $caption,
 					"created" => now()
-				], 
+				],
 				array("ids" => $ids)
 			);
 		}
@@ -95,26 +136,24 @@ class caption extends MY_Controller {
 			"status" => "success",
 			"message" => __('Success')
 		]);
-
 	}
 
-	public function delete(){
+	public function delete()
+	{
 		$ids = post('id');
 
-		if( empty($ids) ){
+		if (empty($ids)) {
 			ms([
 				"status" => "error",
 				"message" => __('Please select an item to delete')
 			]);
 		}
 
-		if( is_array($ids) ){
+		if (is_array($ids)) {
 			foreach ($ids as $id) {
 				$this->model->delete($this->tb_caption, ['ids' => $id]);
 			}
-		}
-		elseif( is_string($ids) )
-		{
+		} elseif (is_string($ids)) {
 			$this->model->delete($this->tb_caption, ['ids' => $ids]);
 		}
 

@@ -469,8 +469,20 @@ var Core = new Core(); $(function () { Core.init(); });; "use strict"; function 
                 if (result.status != undefined) { Core.notify(result.message, result.status); }
                 self.overplay("hide");
             }, 'json'); return false;
+        }); $(document).on("click", ".hashtags", function () {
+            var that = $(this);
+            var caption = that.parents(".caption").find("textarea").val();
+
+            $.post(PATH + "caption/hashtags", { caption: caption }, function (result) {
+
+                $('.post-create .caption .emojionearea-editor').append(result.text);
+
+
+            }, 'json');
+
+            return false;
         }); $(document).on("click", ".popup-caption .item", function () { var that = $(this); var name = $(".popup-caption").attr("data-field"); var caption = that.attr("data-content"); var el = $("textarea[name='" + name + "']").emojioneArea(); el[0].emojioneArea.setText(caption); $('.post-create').removeClass("overflow-hidden h-100"); $(".popup-caption").remove(); });
-    }; this.append = function () { var _html = '<a href="javascript:void(0);" class="item get-caption" data-toggle="tooltip" data-trigger="hover" data-placement="top" title="" data-original-title="' + Core.l("Get caption") + '">'; _html += '<i class="far fa-list-alt"></i>'; _html += '</a>'; _html += '<a href="javascript:void(0);" class="item save-caption" data-toggle="tooltip" data-trigger="hover" data-placement="top" title="" data-original-title="' + Core.l("Save caption") + '">'; _html += '<i class="far fa-save"></i>'; _html += '</a>'; $(".caption-toolbar").append(_html); Layout.tooltip(); }
+    }; this.append = function () { var _html = '<a href="javascript:void(0);" class="item get-caption" data-toggle="tooltip" data-trigger="hover" data-placement="top" title="" data-original-title="' + Core.l("Get caption") + '">'; _html += '<i class="far fa-list-alt"></i>'; _html += '</a>'; _html += '<a href="javascript:void(0);" class="item save-caption" data-toggle="tooltip" data-trigger="hover" data-placement="top" title="" data-original-title="' + Core.l("Save caption") + '">'; _html += '<i class="far fa-save"></i>'; _html += '</a>'; _html += '<a href="javascript:void(0);" class="item hashtags" data-toggle="tooltip" data-trigger="hover" data-placement="top" title="" data-original-title="' + Core.l("Generate Hashtags") + '">'; _html += '<i class="fas fa-hashtag"></i>'; _html += '</a>'; $(".caption-toolbar").append(_html); Layout.tooltip(); }
     this.overplay = function (status) { if (status == undefined || status == "show") { $(".post-overplay").fadeIn(); } else { $(".post-overplay").fadeOut(); } };
 }
 var Caption = new Caption(); $(function () { Caption.init(); });; (function (factory) { if (typeof define === "function" && define.amd) { define(["jquery"], factory); } else if (typeof exports === "object") { factory(require("jquery")); } else { factory(jQuery); } }(function ($) {
