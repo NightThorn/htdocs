@@ -25,7 +25,7 @@
       <div class="col-12 col-md-6">
         <div class="welcome_text_area">
           <h2 class="wow fadeInUp" data-wow-delay="0.2s"><?php _e("SocialJutsu™") ?></h2>
-          <h3 class="wow fadeInUp" style="color: grey;" data-wow-delay="0.2s">The Ninja-Level Social Media Management Software</h3>
+          <h3 class="wow fadeInUp" style="color: grey;" data-wow-delay="0.2s">Social Media Made Easy.</h3>
           <h5 class="wow fadeInUp" style="color: grey;" data-wow-delay="0.2s">Save time and energy by posting to all of your socials from one spot! Schedule your posts, view analytics, and let our AI Post Generator provide you with post ideas to engage and market to your audience!</h5>
 
           <a class="btn wimax-btn mt-30 wow fadeInUp" href="<?php _e(get_url("signup")) ?>" data-wow-delay="0.4s"><?php _e("Join the Beta!") ?></a><a class="btn wimax-btn btn-2 mt-30 ml-2 wow fadeInUp" href="#features" data-wow-delay="0.5s"><?php _e("Learn More") ?></a>
@@ -173,14 +173,17 @@
     <div class="row justify-content-center align-items-center">
       <div class="col-12 col-md-6 col-lg-5">
         <div class="about_image mb-5 mb-md-0">
-          <div class="big_thumb wow fadeInLeft" data-wow-delay="0.2s"><img src="<?php _e(get_theme_frontend_url('assets/img/bg-img/hero-3.png')) ?>" alt=""></div>
-          <div class="small_thumb wow fadeInLeft" data-wow-delay="0.4s"><img src="<?php _e(get_theme_frontend_url('assets/img/bg-img/hero-3.png')) ?>" alt=""></div>
+          <div class="big_thumb wow fadeInLeft" data-wow-delay="0.2s">
+            <video width="100%" autoplay loop muted>
+              <source src="<?php _e(get_theme_frontend_url('assets/aipostgenerator.mp4')) ?>" alt="ai post generator">
+            </video>
+          </div>
         </div>
       </div>
       <div class="col-12 col-md-6 col-lg-5">
         <div class="about_us_text_area wow fadeInUp" data-wow-delay="0.2s">
-          <h3><?php _e("Streamline your social media processes & delivery for your clients") ?></h3>
-          <p><?php _e("Whether focusing on a campaign for one brand or managing socials across hundreds, Our service helps social media influencers be more productive by managing all their activities from a centralized hub. Our service is guaranteed to save your hours each day") ?></p>
+          <h3><?php _e("Save yourself time and headaches with our AI Post Generator!") ?></h3>
+          <p><?php _e("Do you find yourself stuck trying to think of what to post to your socials? Not anymore. Our AI Post Generator will save you hours each day.") ?></p>
         </div>
       </div>
     </div>
@@ -231,8 +234,8 @@
       <div class="col-12 col-sm-4 col-md-3">
         <div class="single_work_step">
           <div class="step-icon"><i class="lni lni-image"></i></div>
-          <h5><?php _e("Watermark") ?></h5>
-          <p><?php _e("Easily add watermark to your images with intuitive interface") ?></p>
+          <h5><?php _e("Built-in Editor") ?></h5>
+          <p><?php _e("Easily edit your images with a super simple interface") ?></p>
         </div>
       </div>
       <div class="col-12 col-sm-4 col-md-3">
@@ -304,8 +307,9 @@
               <div class="rating"><i class="lni-star-filled"></i><i class="lni-star-filled"></i><i class="lni-star-filled"></i><i class="lni-star-filled"></i><i class="lni-star-filled"></i></div>
               <div class="testimonial_author_name">
                 <a href="https://twitter.com/johnreaveslive">
-                  <h5><?php _e("John Reaves") ?></h5></a>
-                  <h6><?php _e("CEO & Co-Owner, GGs.tv") ?></h6>
+                  <h5><?php _e("John Reaves") ?></h5>
+                </a>
+                <h6><?php _e("CEO & Co-Owner, GGs.tv") ?></h6>
               </div>
             </div>
           </div>

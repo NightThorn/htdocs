@@ -7,7 +7,7 @@
         <div class="single-footer-widget section_padding_0_130">
           <!-- Footer Logo-->
           <div class="footer-logo mb-3"><a href="<?php _e( get_url() )?>"><img src="<?php _e( get_option('website_black', get_url("inc/themes/backend/default/assets/img/logo-black.png")) )?>" alt=""></a></div>
-          <p><?php _e( get_option('website_desc', '#1 Marketing Platform for Social Network') )?></p>
+          <p><?php _e( get_option('website_desc', 'Social Media Made Easy') )?></p>
           <!-- Copywrite Text-->
           <div class="copywrite-text mb-5">
             <p class="mb-0"><?php _e("&copy; 2020-2021. All rights reserved.")?></p>
