@@ -35,7 +35,8 @@ if($CI->load->module_name == 'team'){
 
 		if( segment(2) == "join" && segment(3) ){
 			_ss("join_team", segment(3));
-			redirect( get_url("login?redirect=".urlencode( current_url() ) ) );
+			
+			redirect( get_url("signup?redirect=".urlencode( current_url() ) ) );
 
 		}
 	}

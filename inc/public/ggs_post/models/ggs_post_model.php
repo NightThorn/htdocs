@@ -92,20 +92,17 @@ class ggs_post_model extends MY_Model
 
 				if (count($medias) == 1) {
 					if (is_photo($medias[0])) {
-						$medias[0] = watermark($medias[0], $account->team_id, $account->id);
-
 						$path = $medias[0];
 						$type = pathinfo($path, PATHINFO_EXTENSION);
+						if ($type == "jpg") {
+
+							$type = "jpeg";
+						}
 						$data = file_get_contents($path);
 						$b64image = 'data:image/' . $type . ';base64,' . base64_encode($data);
-						$endpoint .= "photos";
-
 						$params = ['message' => $caption, 'user_id' => $account->pid, 'picture' => $b64image];
 						$test = json_encode($params);
 					} else {
-
-						$endpoint .= "videos";
-
 						$path = $medias[0];
 						$type = pathinfo($path, PATHINFO_EXTENSION);
 						$data = file_get_contents($path);
@@ -136,12 +133,12 @@ class ggs_post_model extends MY_Model
 								curl_setopt($ch, CURLOPT_POST, 1);
 								curl_setopt($ch, CURLOPT_POSTFIELDS, $test);
 								curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-								curl_setopt($ch, CURLOPT_HEADER, 0);
 								curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
 								$response = curl_exec($ch);
 
 								$post_id =  $response['id'];
+
 								unlink_watermark($medias);
 								return [
 									"status" => "success",
@@ -155,6 +152,10 @@ class ggs_post_model extends MY_Model
 							}
 						} else {
 							if ($account->category != "page") {
+								$headers  = [
+									'x-api-key: XXXXXX',
+									'Content-Type: text/plain'
+								];
 								$params = ['message' => $caption, 'user_id' => $account->pid, 'video' => $media];
 								$test = json_encode($params);
 								try {
@@ -164,13 +165,13 @@ class ggs_post_model extends MY_Model
 									curl_setopt($ch, CURLOPT_POST, 1);
 									curl_setopt($ch, CURLOPT_POSTFIELDS, $test);
 									curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-									curl_setopt($ch, CURLOPT_HEADER, 0);
 									curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
 									$response = curl_exec($ch);
 
 									$post_id =  $response['id'];
 									unlink_watermark($medias);
+
 									return [
 										"status" => "success",
 										"message" => __('Success dudeee'),
@@ -194,9 +195,9 @@ class ggs_post_model extends MY_Model
 				break;
 
 			case 'link':
-				
+
 				$endpoint .= "feed";
-				$params = ['message' => $caption. " " .$link, 'user_id' => $account->pid];
+				$params = ['message' => $caption . " " . $link, 'user_id' => $account->pid];
 				$test = json_encode($params);
 
 				break;
@@ -212,20 +213,20 @@ class ggs_post_model extends MY_Model
 
 		try {
 
-
 			$url = 'https://ggs.tv/api/v1/post.php?action=post';
-
 			$ch = curl_init($url);
 			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+			curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $test);
 			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-			curl_setopt($ch, CURLOPT_HEADER, 0);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-
 			$response = curl_exec($ch);
-
 			$post_id =  $response['id'];
 			unlink_watermark($medias);
+			curl_close($ch);
+
 			return [
 				"status" => "success",
 				"message" => __('Success dudeee'),
