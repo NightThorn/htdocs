@@ -2,10 +2,8 @@
 
 	<div class="fm-wiget">
 		<div class="fm-progress-bar"></div>
-		<div class="fm-files sortable" style="border: 1px dashed;">
-			<p class="dragdrop" style="text-align: center; color: grey; margin: auto;
-  width: 50%;
-  padding: 20px;">Drag and Drop</p>
+		<div style="display: none;" class="fm-files sortable" style="border: 1px dashed;">
+
 		</div>
 
 		<div class="fm-toolbar">
