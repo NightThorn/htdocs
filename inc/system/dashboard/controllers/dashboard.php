@@ -68,6 +68,7 @@ class dashboard extends MY_Controller
 		$social = $this->input->post('social');
 
 		if (!empty($id)) {
+
 			if ($social == "twitter") {
 				$this->consumer_key = get_option('twitter_consumer_key', '');
 				$this->consumer_secret = get_option('twitter_consumer_secret', '');
@@ -278,6 +279,65 @@ class dashboard extends MY_Controller
 
 
 				echo ('</div>');
+			} elseif ($social == "ggs") {
+
+
+				$ch = curl_init("https://ggs.tv/api/v1/feed.php?filter=all&user=294");
+
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				curl_setopt($ch, CURLOPT_HEADER, 0);
+				$data = curl_exec($ch);
+				curl_close($ch);
+				$exchangeT = json_decode($data, true);
+				echo ('<div class="col-sm-4">');
+				foreach ($exchangeT['message'] as $value) {
+					$text = htmlspecialchars_decode($value['text'], ENT_QUOTES);
+					$words = $this->ggs($text);
+
+					$returnedTimestamp = strtotime($value['time']);
+					$timePart = date('h:i A', $returnedTimestamp);
+
+					echo ('<div class="preview-facebook">
+	
+	<div class="card">
+		
+		<div class="card-body p-0">
+
+            <div class="preview-facebook" >
+                <div class="user-info">
+                    <img class="img-circle" height="30" src="https://ggspace.nyc3.cdn.digitaloceanspaces.com/uploads/' . $value['user_picture'] . '">
+                    <div class="text">
+                        <div class="name">' . $value['user_name'] . ' </div>
+                        <span> ' . $timePart . ' . <i class="fa fa-globe" aria-hidden="true"></i></span>
+                    </div>
+                </div>
+                <div style="padding: 10px;" >
+                    ' . $words . '
+                </div>
+
+						' . (($value['post_type']) === "video" ? '<div style="width: 100%;"><video controls muted style="padding: 10px;" width="100%"> <source src="https://ggspace.nyc3.cdn.digitaloceanspaces.com/uploads/' . $value['source'] . '" type="video/mp4"></video></div>' : '') . '
+						
+                <div class="preview-comment">
+                        <div class="row">
+                            <div class="col-4" id="hovercomment">
+                                <i class="far fa-comment" onClick="commenttoggle(\'' . $value->id_str . '\');" id="twittercommenticon_' . $value->id . '" aria-hidden="true"> </i><span id="commented_' . $value->id . '">Comment</span>
+                            </div>
+                            <div class="col-4" id="hoverretweet">
+                                <i class="fas fa-retweet"  onClick="twitter(\'' . $value->id_str . '\', \'retweet\', \'\', \'' . $id . '\');" style="' . (($value->retweeted ? 'color: green;' : '')) . '" id="twitterretweet_' . $value->id . '"aria-hidden="true"></i><span id="retweeted_' . $value->id . '"> ' . (($value->retweeted ? 'Retweeted' : 'Retweet This')) . '</span>
+                            </div>
+                            <div class="col-4" id="hoverlike">
+                                <i class="far fa-heart"  onClick="twitter(\'' . $value->id_str . '\', \'like\', \'\', \'' . $id . '\');" style="' . (($value->favorited ? 'color: red;' : '')) . '" id="twitterlike_' . $value->id . '" aria-hidden="true"></i> <span id="favorited_' . $value->id . '">' . (($value->favorited ? 'Liked' : 'Like This')) . '</span>
+                            </div>
+                            
+                        </div> 
+                </div>
+            </div>
+			</div>
+		</div>
+	</div>');
+				}
+
+				echo ('</div>');
 			} else {
 				$token = "yres";
 				echo $token;
@@ -362,6 +422,21 @@ class dashboard extends MY_Controller
 
 		//Convert attags to twitter profiles in <a> links
 		$tweetss = preg_replace("/@([A-Za-z0-9\/\.]*)/", "<a href=\"http://www.twitter.com/$1\">@$1</a>", $tweets);
+
+		return $tweetss;
+	}
+
+	public function ggs($tweet)
+	{
+
+		//Convert urls to <a> links
+		$tweeter = preg_replace('|([\w\d]*)\s?(https?://([\d\w\.-]+\.[\w\.]{2,6})[^\s\]\[\<\>]*/?)|i', '$1 <a href="$2">$2</a>', $tweet);
+
+		//Convert hashtags to twitter searches in <a> links
+		$tweets = preg_replace("/#([A-Za-z0-9\/\.]*)/", "<a target=\"_new\" href=\"http://ggs.tv/search/hashtag/?q=$1\">#$1</a>", $tweeter);
+
+		//Convert attags to twitter profiles in <a> links
+		$tweetss = preg_replace("/@([A-Za-z0-9\/\.]*)/", "<a href=\"http://www.ggs.tv/$1\">@$1</a>", $tweets);
 
 		return $tweetss;
 	}

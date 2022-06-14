@@ -38,7 +38,7 @@ function Post() {
                 $(".post-create .item-post-type[data-type='" + post_type + "']").show();
                 $(".post-preview .item-post-type[data-type='" + post_type + "']").show();
 
-                $('.fm-wiget .fm-files').html('');
+                //$('.fm-wiget .fm-files').html('');
 
             }
         });

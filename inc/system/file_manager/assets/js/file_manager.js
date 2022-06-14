@@ -159,6 +159,7 @@ function File_Manager() {
             html += '<a href="javascript:void(0);" class="btn-close"><i class="fas fa-times"></i></a>';
             html += '</div>';
         }
+        $('.fm-wiget .fm-files .dragdrop').html('');
 
         $('.fm-wiget .fm-files').append(html);
         self.load_video();
