@@ -1,1 +1,1 @@
-<?php _e($result, false) ?>
+<?php _e($result ,false)?>

@@ -12,6 +12,5 @@ return [
         'tab' => 1,
         'position' => 1100,
         'name' => 'Dashboard'
-    ],
-   
+    ]
 ];

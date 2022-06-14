@@ -1,145 +1,88 @@
+<?php
+$report_list = get_ci_value("reports_list");
+if (count($report_list) == 1) {
+	foreach ($report_list as $row) {
+		$id = strtolower(str_replace(" ", "_", $row['name']));
+		if (!segment(3) == $id) {
+			redirect(get_module_url("index/" . $id));
+		}
+	}
+}
+?>
+
+<div class="input-group box-search-one">
+	<input class="form-control search-input" type="text" autocomplete="off" placeholder="<?php _e('Search') ?>">
+	<span class="input-group-append">
+		<button class="btn" type="button">
+			<i class="fa fa-search"></i>
+		</button>
+	</span>
+</div>
+
 <div class="widget">
 
 	<div class="widget-list search-list">
-		<?php if (!empty($result)) { ?>
+		<?php if (count($report_list) != 1) { ?>
+			<div class="widget-item widget-item-3 search-list <?php _e(segment(3) == "" ? "active" : "") ?>" data-pid="">
+				<a href="<?php _e(get_module_url("index")) ?>" class="actionItem" data-result="html" data-content="column-two" data-history="<?php _e(get_module_url("index")) ?>" data-call-after="Layout.tooltip();">
+					<div class="icon border"><i class="fas fa-chart-bar" style="color: #fa7070"></i></div>
+					<div class="content content-2">
+						<div class="title fw-4"><?php _e("All") ?></div>
+						<div class="desc"><?php _e("Report") ?></div>
+					</div>
+				</a>
+
+				<div class="widget-option">
+					<label class="i-radio i-radio--tick i-radio--brand m-t-6">
+						<input type="radio" name="account[]" class="check-item" <?php _e(segment(3) == "" ? "checked" : "") ?> value="">
+						<span></span>
+					</label>
+				</div>
+			</div>
+		<?php } ?>
+
+		<?php
 
 
+		if (!empty($report_list)) { ?>
 
-			<?php foreach ($result as $row) : ?>
-				<div onclick='load("<?php echo $row->pid; ?>" , "<?php echo $row->social_network; ?>" )' class="widget-item widget-item-3 search-list">
-					<a href="#">
-						<div class="icon"><img src="<?php _e(BASE . get_data($row, 'avatar')) ?>"></div>
+			<?php foreach ($report_list as $row) :
+				$icon = $row['icon'];
+				$name = $row['name'];
+				$color = $row['color'];
+				$img = $row['img'];
+
+				$id = strtolower(str_replace(" ", "_", $row['name']));
+			?>
+
+				<div class="widget-item widget-item-3 search-list <?php _e(segment(3) == $id ? "active" : "") ?>" data-pid="<?php _e(get_data($row, 'pid')) ?>">
+					<a href="<?php _e(get_module_url("index/" . $id)) ?>" class="actionItem" data-result="html" data-content="column-two" data-history="<?php _e(get_module_url("index/" . $id)) ?>" data-call-after="Layout.tooltip();">
+						<div class="icon border"> <?php
+													if ($img == "https://ggspace.nyc3.cdn.digitaloceanspaces.com/uploads/photos/2022/04/gg_a542a716a5e431dbeee72402d1fcdb0b.png") {
+														echo '<img height="25" src="https://ggspace.nyc3.cdn.digitaloceanspaces.com/uploads/photos/2022/04/gg_a542a716a5e431dbeee72402d1fcdb0b.png">';
+													} ?><i class="<?php _e($icon) ?>" style="color: <?php _e($color) ?>"></i></div>
 						<div class="content content-2">
-							<div class="title fw-4"><?php _e(get_data($row, 'name')) ?></div>
-							<div class="desc"><?php _e(ucfirst($row->social_network . " " . __($row->category))) ?></div>
+							<div class="title fw-4"><?php _e($name) ?></div>
+							<div class="desc"><?php _e("Report") ?></div>
 						</div>
 					</a>
 
-					<div style="display: none;" class="widget-option">
-						<label class="i-checkbox i-checkbox--tick i-checkbox--brand m-t-6">
-							<input type="radio" name="account[]" class="check-item" <?php _e(segment(3) == "" ? "checked" : "") ?> value="">
+					<div class="widget-option">
+						<label class="i-radio i-radio--tick i-radio--brand m-t-6">
+							<input type="radio" name="account[]" class="check-item" <?php _e(segment(3) == $id ? "checked" : "") ?> value="<?php _e($id) ?>">
 							<span></span>
 						</label>
 					</div>
 				</div>
+
 			<?php endforeach ?>
 
-
 		<?php } else { ?>
+
 			<div class="empty small"></div>
-			<div class="text-center">
-				<a class="btn btn-info" href="<?php _e(get_url("account_manager")) ?>">
-					<i class="fas fa-plus-square"></i> <?php _e("Add account") ?>
-				</a>
-			</div>
+
 		<?php } ?>
+
 	</div>
 
 </div>
-<style>
-	#hoverretweet:hover {
-		background-color: rgb(27 35 67);
-		color: white;
-
-	}
-
-	#hoverlike:hover {
-		background-color: rgb(27 35 67);
-		color: white;
-	}
-
-	#hovercomment:hover {
-		background-color: rgb(27 35 67);
-		color: white;
-
-	}
-</style>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
-<script>
-	function load($pi, $cherry) {
-		console.log($pi, $cherry);
-		$.ajax({
-			url: "<?php echo site_url('dashboard/block_report'); ?>",
-			method: "POST",
-			data: {
-				id: $pi,
-				social: $cherry
-			},
-			success: function(data) {
-				console.log(data)
-				$(".column-two").empty().append(data);
-
-			},
-			error: function() {
-				alert("Something went wrong. Please try again later.");
-			}
-		});
-	}
-
-	function twitter($id, $act, $text, $account) {
-
-		$.ajax({
-			url: "<?php echo site_url('dashboard/twitter'); ?>",
-			method: "POST",
-			data: {
-				id: $id,
-				act: $act,
-				text: $text,
-				account: $account
-
-			},
-			success: function(data) {
-				if ($act == "like") {
-					$("#twitterlike_" + $id).css("color", "red");
-					$("#favorited_" + $id).text("Liked");
-
-				} else if ($act == "retweet") {
-					$("#twitterretweet_" + $id).css("color", "green");
-					$("#retweeted_" + $id).text("Retweeted");
-				}
-			},
-			error: function() {
-				alert("Something went wrong. Please try again later.");
-			}
-		});
-	}
-
-	function commenttoggle($id) {
-
-		var x = document.getElementById("comment_" + $id);
-		if (x.style.display === "none") {
-			x.style.display = "flex";
-		} else {
-			x.style.display = "none";
-
-		}
-	}
-
-	function twittercomment($id, $act, $account) {
-		event.preventDefault();
-		$text = $("#commentinput_" + $id).val();
-		$.ajax({
-			url: "<?php echo site_url('dashboard/twitter'); ?>",
-			method: "POST",
-			data: {
-				id: $id,
-				act: $act,
-				text: $text,
-				account: $account
-
-			},
-			success: function(data) {
-
-				$("#twittercommenticon_" + $id).css("color", "#00fbcd");
-				$("#commented_" + $id).text("Commented");
-				$("#comment_" + $id).css("display", "none");
-
-
-			},
-			error: function() {
-				alert("Something went wrong. Please try again later.");
-			}
-		});
-	};
-</script>
