@@ -843,6 +843,10 @@
     content: "\eac5"
 }
 
+.lni-ai:before {
+    content: "\eb69"
+}
+
 .lni-volume-mute:before {
     content: "\e9be"
 }
