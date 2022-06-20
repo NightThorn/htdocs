@@ -1,45 +1,47 @@
 <?php
-class schedules extends MY_Controller {
-	
+class schedules extends MY_Controller
+{
+
 	public $tb_account_manager = "sp_account_manager";
 	public $tb_posts = "sp_posts";
 
-	public function __construct(){
+	public function __construct()
+	{
 		parent::__construct();
-		_permission(get_class($this)."_enable");
-		$this->load->model(get_class($this).'_model', 'model');
+		_permission(get_class($this) . "_enable");
+		$this->load->model(get_class($this) . '_model', 'model');
 
 		//		
-		$this->module_img = get_module_config( $this, 'img' );
+		$this->module_img = get_module_config($this, 'img');
 
-		$this->module_name = get_module_config( $this, 'name' );
-		$this->module_icon = get_module_config( $this, 'icon' );
-		$this->module_color = get_module_config( $this, 'color' );
+		$this->module_name = get_module_config($this, 'name');
+		$this->module_icon = get_module_config($this, 'icon');
+		$this->module_color = get_module_config($this, 'color');
 		$this->dir = get_directory_block(__DIR__, get_class($this));
 	}
 
 	public function index($type = "", $category = "", $time = "")
-	{	
-		if(!in_array($type, ["queue", "published", "unpublished"]) || $category == "") redirect( get_module_url("index/queue/all") );
+	{
+		if (!in_array($type, ["queue", "published", "unpublished"]) || $category == "") redirect(get_module_url("index/queue/all"));
 
 		$categories = $this->model->category();
 		$result = $this->model->list($type, $category, $time);
 
-		if(!is_ajax()){
+		if (!is_ajax()) {
 			$views = [
-				"subheader" => view( 'main/subheader', ['module_img' => $this->module_img, 'module_name' => $this->module_name, 'module_icon' => $this->module_icon ], true ),
-				"column_one" => view( 'main/sidebar', [ "categories" => $categories ], true ),
-				"column_two" => view("pages/general", [] ,true), 
-				"column_three" => view("pages/list", [ "result" => $result ] ,true), 
+				"subheader" => view('main/subheader', ['module_img' => $this->module_img, 'module_name' => $this->module_name, 'module_icon' => $this->module_icon], true),
+				"column_one" => view('main/sidebar', ["categories" => $categories], true),
+				"column_two" => view("pages/general", [], true),
+				"column_three" => view("pages/list", ["result" => $result], true),
 			];
-			
-			views( [
+
+			views([
 				"title" => $this->module_name,
 				"fragment" => "fragment_three",
 				"views" => $views
-			] );
-		}else{
-			view("pages/list", [ "result" => $result ] , false);
+			]);
+		} else {
+			view("pages/list", ["result" => $result], false);
 		}
 	}
 
@@ -47,22 +49,19 @@ class schedules extends MY_Controller {
 	{
 		$posts = $this->model->calendar($type, $category);
 
-		if($posts)
-		{
+		if ($posts) {
 			$data = [];
-			foreach ($posts as $key => $post)
-			{
-				$social_network = ucfirst( __( str_replace("_", " ", $post->social_network) ) )." ".__( $post->category );
+			foreach ($posts as $key => $post) {
+				$social_network = ucfirst(__(str_replace("_", " ", $post->social_network))) . " " . __($post->category);
 
-				$module_path = find_modules( $post->category );
+				$module_path = find_modules($post->category);
 
-				if($module_path)
-				{
+				if ($module_path) {
 					$module_img = get_module_config($module_path, 'img');
 
-					$module_name = get_module_config( $module_path, 'name' );
-					$module_icon = get_module_config( $module_path, 'icon' );
-					$module_color = get_module_config( $module_path, 'color' );
+					$module_name = get_module_config($module_path, 'name');
+					$module_icon = get_module_config($module_path, 'icon');
+					$module_color = get_module_config($module_path, 'color');
 
 					$data[] = [
 						"id" => 1,
@@ -71,9 +70,7 @@ class schedules extends MY_Controller {
 						"enddate" => $post->repost_untils,
 						"color" => "{$module_color}",
 					];
-
 				}
-
 			}
 
 			$data = [
@@ -81,20 +78,17 @@ class schedules extends MY_Controller {
 			];
 
 			echo json_encode($data);
-
+		} else {
+			echo json_encode(['monthly' => []]);
 		}
-		else
-		{
-			echo json_encode([ 'monthly' => [] ]);
-		}
-
 	}
 
-	public function delete($type ="single"){
+	public function delete($type = "single")
+	{
 		$team_id = _t("id");
 		switch ($type) {
 			case 'multi':
-				
+
 				$type = post("type");
 				$category = post("category");
 
@@ -110,7 +104,7 @@ class schedules extends MY_Controller {
 					case 'unpublished':
 						$status = 4;
 						break;
-					
+
 					default:
 						ms([
 							"status" => "error",
@@ -119,28 +113,26 @@ class schedules extends MY_Controller {
 						break;
 				}
 
-				$data = [ "team_id" => $team_id, "status" => $status ];
-				if($category != "all"){
+				$data = ["team_id" => $team_id, "status" => $status];
+				if ($category != "all") {
 					$data["category"] = $category;
 				}
-				$this->model->delete( $this->tb_posts, $data );
+				$this->model->delete($this->tb_posts, $data);
 
 				ms([
 					"status" => "success",
 					"message" => __("Success")
 				]);
 				break;
-			
+
 			default:
 				$ids = post("id");
-				$this->model->delete( $this->tb_posts,  [ "ids" => $ids, "team_id" => $team_id ]);
+				$this->model->delete($this->tb_posts,  ["ids" => $ids, "team_id" => $team_id]);
 				ms([
 					"status" => "success",
 					"message" => __("Success")
 				]);
 				break;
 		}
-
 	}
-
 }

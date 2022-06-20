@@ -2,7 +2,7 @@
 
 	<div class="fm-wiget">
 		<div class="fm-progress-bar"></div>
-		<div style="display: none;" class="fm-files sortable" style="border: 1px dashed;">
+		<div class="fm-files sortable" style="border: 1px dashed;">
 
 		</div>
 

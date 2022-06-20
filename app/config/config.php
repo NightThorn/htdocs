@@ -456,7 +456,7 @@ $config['csrf_token_name'] = 'token';
 $config['csrf_cookie_name'] = 'token';
 $config['csrf_expire'] = 1209600;
 $config['csrf_regenerate'] = FALSE;
-$config['csrf_exclude_uris'] = array('post/topic', 'package_manager.*+', 'dashboard/block_report', 'dashboard/twitter', 'caption/hashtags');
+$config['csrf_exclude_uris'] = array('post/topic', 'package_manager.*+', 'dashboard/block_report', 'dashboard/twitter', 'caption/hashtags', 'post/getscheduled');
 
 /*
 |--------------------------------------------------------------------------

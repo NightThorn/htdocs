@@ -57,6 +57,24 @@
     <div class="row justify-content-center">
       <div class="col-12 col-sm-8 col-lg-6">
         <div class="section_heading text-center wow fadeInUp" data-wow-delay="0.2s">
+          <h3>Post to ALL of your socials in under <u>30 SECONDS!</u></h3>
+          <p><?php _e("Pro Tip: Setup social groups for easy scheduling for different brands and accounts!") ?></p>
+
+        </div>
+      </div>
+    </div>
+    <video style="box-shadow: 5px 5px 15px 5px rgb(0 0 0 / 19%);
+border-radius: 20px;" width="100%" autoplay loop muted>
+      <source src="<?php _e(get_theme_frontend_url('assets/post.mp4')) ?>" alt="ai post generator">
+    </video>
+
+
+</section>
+<section class="about_area section_padding_130">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12 col-sm-8 col-lg-6">
+        <div class="section_heading text-center wow fadeInUp" data-wow-delay="0.2s">
           <h6><?php _e("Using Benefits") ?></h6>
           <h3><?php _e("A simple, smart & proven way to boost your work performance") ?></h3>
           <div class="line"></div>
