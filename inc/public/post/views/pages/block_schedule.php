@@ -45,7 +45,10 @@
 		</div>
 	</div>
 </div>
+<?php _e("Scheduled Posts") ?>
 
+<div class="scheduled" id="scheduled">
+</div>
 <div class="fm-action text-right">
 	<?php if (!$post) { ?>
 		<button type="submit" data-action="<?php _e(get_url("post/save")) ?>" class="btn btn-info btn-schedule d-none"><?php _e('Schedule') ?></a>
@@ -110,3 +113,32 @@
 		});
 	</script>
 <?php } ?>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<script>
+	$(document).ready(function() {
+		$("#scheduletime").on('change', function postinput() {
+			var time = $(this).val();
+			$(".scheduled").empty();
+
+			$.ajax({
+				url: "<?php echo site_url('post/getscheduled'); ?>",
+				method: "POST",
+				data: {
+					time: time,
+				},
+				success: function(data) {
+					if (data != "") {
+
+						$(".scheduled").empty().append(data);
+
+					}
+
+				},
+				error: function() {
+					alert("Something went wrong. Please try again later.");
+				}
+			});
+		});
+	});
+</script>

@@ -218,26 +218,102 @@ class post extends MY_Controller
 			"repost_until" => $repost_until,
 			"advance" => $advance
 		];
-
 		$validator = $this->model->post_validator($data);
-
 		$social_can_post = json_decode($validator["can_post"]);
 		if (($skip_validate && !empty($social_can_post)) || $validator["status"] == "success") {
-			$result = $this->model->post($data, $social_can_post);
-			if ($result['status'] == "success") {
-				ms($result);
-				redirect(get_url("dashboard"));
-			} else {
 
+			$result = $this->model->post($data, $social_can_post);
+			
 				ms($result);
-			}
+			
 		}
 		ms($validator);
+		
+		
 	}
 
 	public function block_post_type($post_types = [])
 	{
 		return view($this->dir . "pages/block_post_type", ["post_types" => $post_types], true);
+	}
+
+	public function getscheduled()
+	{
+
+		$time = $this->input->post('time');
+		$newtime = date("Y-m-d", strtotime($time));
+
+		$response = $this->model->list($newtime);
+		foreach ($response as $row) {
+			$data = json_decode($row->data);
+			$medias = is_array($data->medias) ? $data->medias : [];
+			$info = json_decode($row->result);
+			echo (' <p>Scheduled Posts</p><div class="item search-schedule" style="min-width: 100%; border: 1px solid #f4f4f4;
+    border-radius: 4px;
+    padding: 15px;
+    position: relative;
+    min-height: 152px;
+    margin-bottom: 15px;">
+				<div style="width: 120px;
+    height: 120px;
+    border-radius: 4px;
+    background-color: rgba(85,120,235,.1);
+    position: absolute;
+    overflow: hidden; background-size: cover; background-image: url(' . $medias[0] . ');" class="media">
+		<div style="font-weight: bold; bottom: 0; background: #151a30;
+    position: absolute;" class="name">
+						<span>' . ucfirst($row->type) . '</span>
+					</div>
+		<div class="icon" style="background-color: ' . $row->module_color . '; position: absolute;
+    z-index: 10;
+    padding: 5px 9px;
+    border-radius: 4px 0 4px 0;
+    color: #fff;
+    border-right: 1px solid #fff;
+    border-bottom: 1px solid #fff;">
+					<i class="' . $row->module_icon . '"></i>
+				</div>
+				' .
+				(($row->type) === "video" || "carousel" ? '<video autoplay muted style="padding: 10px;" width="100%"> <source src="' . $medias[0] . '" type="video/mp4"></video>' : '')
+				. '
+			
+				</div>
+				
+
+			
+
+				<div style="font-size: 14px; font-weight: 400; color: #74788d; overflow: hidden; margin-left: 135px; margin-right: 15px;" class="info">
+
+					<div style="font-weight: bolder;" class="name">
+						<span>' . $row->name . '</span>
+					</div>
+					<div class="caption nicescroll">
+						
+						<span>
+							' . ($data->caption) . ' 
+						</span>
+					</div>
+					<div class="desc"  style="font-weight: bolder;"><i class="far fa-calendar-alt"></i> <span>' . $row->time_posts . '</span></div>
+
+				</div>
+				
+				<div class="toolbar" style="position: absolute;
+    right: 10px;
+    top: 13px;">
+					<div class="dropdown" style="position: relative;">
+						<button class="btn dropdown-toggle" type="button" data-toggle="dropdown">
+							<i class="ft-more-vertical"></i>
+						</button>
+						<ul class="dropdown-menu dropdown-menu-right dropdown-menu-fit dropdown-menu-anim dropdown-menu-top-unround">
+							<li><a href="' . get_url($row->category . "?edit=" . $row->ids) . '"><i class="far fa-edit"></i> Edit </a></li>
+							<li><a href="https://localhost/schedules/delete" data-trigger="hover" data-id="' . $row->ids . '" class="actionItem" data-remove="item" data-confirm="Are you sure to delete this items?"><i class="far fa-trash-alt"></i> Delete</a></li>
+						</ul>
+					</div>
+				</div>
+				</div>
+
+				');
+		}
 	}
 
 	public function block_preview($social_networks = [])

@@ -195,6 +195,84 @@ class post_model extends MY_Model
 		return $response;
 	}
 
+	public function list($time)
+	{
+		$time_check = explode("-", $time);
+
+		$category = "all";
+
+		$status = 1;
+
+		$team_id = _t("id");
+		$timezone = _u('timezone');
+		$timezone_number =  tz_list_number($timezone);
+
+		$date_start = $time . " 00:00:00";
+		$date_end = $time . " 23:59:59";
+		$this->db->query(" SET time_zone = '{$timezone_number}' ");
+		$this->db->select("
+			from_unixtime(a.time_post,'%m/%d/%Y %H:%i') as time_posts, 
+			from_unixtime(a.repost_until,'%Y-%m-%d %H:%i:%s') as repost_untils, 
+			a.time_post, 
+			a.repost_until, 
+			a.team_id, 
+			a.social_network, 
+			a.category,
+			a.type,
+			a.id,
+			a.ids,
+			a.data,
+			a.status,
+			a.result,
+			b.name,
+			b.username,
+			b.url
+		");
+		$this->db->from($this->tb_posts . " as a");
+		$this->db->join($this->tb_account_manager . " as b", "a.account_id = b.id");
+
+		$cate = "";
+		if (strip_tags($category) != "all") {
+			$cate = " a.category = '{$category}' AND ";
+		}
+
+		$this->db->having(" ( {$cate} a.status = '{$status}' AND from_unixtime(a.time_post,'%Y-%m-%d %H:%i:%s') >= '{$date_start}' AND from_unixtime(a.time_post,'%Y-%m-%d %H:%i:%s') <= '{$date_end}' AND a.repost_until IS NULL AND a.team_id = '{$team_id}' ) ");
+		$this->db->or_having(" ( {$cate} a.status = '{$status}' AND from_unixtime(a.time_post,'%Y-%m-%d 00:00:00') <= '{$date_end}' AND from_unixtime(a.repost_until,'%Y-%m-%d 23:59:59') >= '{$date_start}' AND a.team_id = '{$team_id}' ) ");
+
+		$this->db->order_by("a.time_post ASC");
+		$query = $this->db->get();
+
+		if ($query->result()) {
+
+			$result = $query->result();
+			foreach ($result as $key => $row) {
+
+				$module_path = find_modules($row->category);
+
+				if (!_p($row->category . "_enable")) {
+					unset($result[$key]);
+					continue;
+				}
+
+				if ($module_path) {
+					$result[$key]->module_name = get_module_config($module_path, 'name');
+					$result[$key]->module_icon = get_module_config($module_path, 'icon');
+					$result[$key]->module_color = get_module_config($module_path, 'color');
+					$result[$key]->module_img = get_module_config($module_path, 'img');
+				} else {
+					$result[$key]->module_img = "";
+
+					$result[$key]->module_name = "";
+					$result[$key]->module_icon = "";
+					$result[$key]->module_color = "";
+				}
+			}
+			return $result;
+		}
+
+		return false;
+	}
+
 
 	public function post($data, $social_can_post = false)
 	{

@@ -89,6 +89,7 @@ if (!function_exists('ms')) {
     }
 }
 
+
 if (!function_exists('ids')) {
     function ids()
     {
@@ -96,6 +97,8 @@ if (!function_exists('ids')) {
         return md5($CI->encryption->encrypt(time()));
     };
 }
+
+
 
 if (!function_exists('_e')) {
     function _e($text = '', $strip_tags = true)
